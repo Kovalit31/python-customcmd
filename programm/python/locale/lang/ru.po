@@ -1,0 +1,6 @@
+command.pause.title
+Нажмите enter, чтобы продолжить...
+error.file.read
+Невозможно открыть файл:
+error.syscode.unregistered
+Неожиданный системный код:

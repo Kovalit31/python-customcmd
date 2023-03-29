@@ -1,0 +1,6 @@
+command.pause.title
+Press enter to continue...
+error.file.read
+Can't open file:
+error.syscode.unregistered
+Unexpected syscode:
