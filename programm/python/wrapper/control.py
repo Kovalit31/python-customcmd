@@ -1,5 +1,6 @@
+from ..core import config
 from . import wrap
-from ..tools import conf_vars, functions
+from ..tools import functions
 from ..locale import locale, tokens
 
 def _default_vars(vars: dict):
@@ -32,12 +33,15 @@ def command_processor(args: list):
                 command = "exit"
         else:
             command = commands[i]
-        syscode, *other = wrap.execute(command)
-        if syscode == conf_vars.SYSEXIT and not in_command:
+        args = wrap.execute(command, vars=variables)
+        syscode = args if type(args) == int else args[0]
+        if type(args) != int and len(args) > 1:
+            other = args[1:]
+        if syscode == config.SYSEXIT and not in_command:
             break
-        elif syscode == conf_vars.GLOBEXIT: # it terminate work anywhere :)
+        elif syscode == config.GLOBEXIT: # it terminate work anywhere :)
             break
-        elif syscode == conf_vars.EXPORTVAR:
+        elif syscode == config.EXPORTVAR:
             try:
                 variables[other[0]] = other[1]
             except Exception as e:

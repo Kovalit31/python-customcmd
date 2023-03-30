@@ -1,4 +1,4 @@
-from ...tools import functions
+from ...tools import functions, path
 from ...locale import locale, tokens
 
 import os
@@ -19,7 +19,7 @@ def lcls(args: list) -> None:
     if part != 0:
         print(" ".join(content[-part:])+"\n")
 
-def export(args: list) -> tuple(str, str):
+def export(args: list) -> tuple[str, str]:
     '''
     Exports variable
     @return variable - Variable
@@ -28,3 +28,21 @@ def export(args: list) -> tuple(str, str):
     '''
     
     pass
+
+def cd(args: list) -> None:
+    '''
+    Cd to @param args[-1]
+    '''
+    if len(args) > 0:
+        if os.path.exists(args[-1]):
+            if os.path.isdir(args[-1]):
+                dir = args[-1]
+            else:
+                functions.info(f"{locale.get_by_token()} {args[-1]}", level='e')
+                return
+        else:
+            functions.info(f"{locale.get_by_token()} {args[-1]}")
+            return
+    else:
+        dir = os.path.defpath
+    path.realcd(dir)

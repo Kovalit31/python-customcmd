@@ -1,10 +1,12 @@
 import os
-from ..tools import functions, conf_vars
+
+from ..core import config
+from ..tools import functions
 
 
 PATH = os.path.join(os.path.dirname(__file__), "lang")
 
-def get_by_token(token: str, lang=conf_vars.DEFAULT_LANG) -> str:
+def get_by_token(token: str, lang=config.DEFAULT_LANG) -> str:
     try:
         file = open(os.path.join(PATH, f"{lang}.po"), "r", encoding="utf-8")
         data = file.readlines()

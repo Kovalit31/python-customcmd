@@ -1,4 +1,5 @@
-from ..tools import functions, conf_vars
+from ..core import config
+from ..tools import functions
 from ..locale import locale, tokens
 from . import commands
 import os
@@ -29,17 +30,17 @@ def execute(command: str, vars={}) -> int:
     _cmd = command.lower().strip().split()
     _self_cmd = _cmd[0].strip()
     if _self_cmd == 'quit' or _self_cmd == 'exit':
-        return conf_vars.SYSEXIT
+        return config.SYSEXIT
     elif _self_cmd == 'globexit':
-        return conf_vars.GLOBEXIT
+        return config.GLOBEXIT
     elif _self_cmd == 'pause':
         input(locale.get_by_token(tokens.COMMAND_PAUSE_TITLE))
-        return conf_vars.CONTINUE
+        return config.CONTINUE
     elif _self_cmd == "lcls":
         commands.lcls(_cmd[1:])
-        return conf_vars.CONTINUE
+        return config.CONTINUE
     elif _self_cmd == 'export':
         variable, value = commands.export(_cmd[1:])
-        return conf_vars.EXPORTVAR, variable, value
+        return config.EXPORTVAR, variable, value
     else:
-        return conf_vars.NOCOMMAND
+        return config.NOCOMMAND

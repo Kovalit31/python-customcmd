@@ -1,2 +1,3 @@
 from . import functions
-from . import conf_vars
+from . import tables
+from . import path
