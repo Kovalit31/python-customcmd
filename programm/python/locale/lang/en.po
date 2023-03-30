@@ -4,3 +4,13 @@ error.file.read
 Can't open file:
 error.syscode.unregistered
 Unexpected syscode:
+io.file.open.try
+Try to open file:
+io.file.name.display
+File:
+error.path.notexists
+No such file or directory:
+error.command.unexpected
+Unexpected command:
+error.path.notdir
+Path not a dir:

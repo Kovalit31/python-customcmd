@@ -10,8 +10,8 @@ def get_commands_ff(_path: str, pwd=".") -> list:
     '''
     path = os.path.join(os.path.abspath(pwd), _path) if os.path.isabs(_path) else _path
     commands = None
-    functions.info("Trying to process file")
-    functions.info(f"File: {path}", level='d')
+    functions.info(f"{locale.get_by_token(tokens.FILE_OPEN_TRY)}")
+    functions.info(f"{locale.get_by_token(tokens.FILE_NAME_DISPLAY)} {path}", level='d')
     try:
         file = open(path, "r")
         commands = file.readlines()
@@ -27,6 +27,8 @@ def execute(command: str, vars={}) -> int:
     '''
     Execute command
     '''
+    if len(command) == 0:
+        return config.CONTINUE
     _cmd = command.lower().strip().split()
     _self_cmd = _cmd[0].strip()
     if _self_cmd == 'quit' or _self_cmd == 'exit':
@@ -42,5 +44,10 @@ def execute(command: str, vars={}) -> int:
     elif _self_cmd == 'export':
         variable, value = commands.export(_cmd[1:])
         return config.EXPORTVAR, variable, value
+    elif _self_cmd == 'cd':
+        commands.cd(_cmd[1:])
+        return config.CONTINUE
+    elif _self_cmd == 'read': # Read and save variable: read <variable> <text>
+        return config.CONTINUE
     else:
         return config.NOCOMMAND

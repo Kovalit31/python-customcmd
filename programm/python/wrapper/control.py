@@ -21,7 +21,7 @@ def command_processor(args: list):
     Processing commands.
     '''
     commands = wrap.get_commands_ff(args[0]) if len(args) > 0 else []
-    variables = {} 
+    variables = {"PS1": ">>> "} 
     in_command = len(commands) != 0
     i = 0
     while True:
@@ -30,6 +30,7 @@ def command_processor(args: list):
             try:
                 command = input(PS1)
             except:
+                print("\n")
                 command = "exit"
         else:
             command = commands[i]
@@ -46,6 +47,10 @@ def command_processor(args: list):
                 variables[other[0]] = other[1]
             except Exception as e:
                 functions.info(f"Can't set variable! {e}", level='e')
+        elif syscode == config.NOCOMMAND:
+            functions.info(f"{locale.get_by_token(tokens.NO_SUCH_COMMAND)} {command.split()[0]}")
+        elif syscode == config.CONTINUE:
+            pass
         else:
             functions.info(f"{locale.get_by_token(tokens.ERRROR_SYSCODE_UNREGISTERED)} {syscode}", level='e')
         
@@ -53,3 +58,4 @@ def command_processor(args: list):
             i += 1
         else:
             in_command = False
+    functions.info("Exit expected!", level="d")

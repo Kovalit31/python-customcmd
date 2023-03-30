@@ -20,6 +20,7 @@ def get_by_token(token: str, lang=config.DEFAULT_LANG) -> str:
                 return data[x+1].strip()
             except Exception as e:
                 functions.info(f"Developer! File {f'{lang}.po'} not fully edited!", level="w")
+                return
     else:
         functions.info(f"Developer! File {f'{lang}.po'} doesn't content {token}!", level='w')
         return str()

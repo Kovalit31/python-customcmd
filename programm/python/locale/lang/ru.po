@@ -4,3 +4,7 @@ error.file.read
 Невозможно открыть файл:
 error.syscode.unregistered
 Неожиданный системный код:
+io.file.open.try
+Попытка открыть файл
+io.file.name.display
+Файл:

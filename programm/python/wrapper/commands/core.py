@@ -8,7 +8,7 @@ def lcls(args: list) -> None:
         if os.path.exists(args[-1]):
             dir = args[-1]
         else:
-            functions.info(f"{locale.get_by_token()}", level="e")
+            functions.info(f"{locale.get_by_token(tokens.PATH_NOT_EXISTS)} {dir}", level="e")
             return
     else:
         dir = "."
@@ -38,10 +38,10 @@ def cd(args: list) -> None:
             if os.path.isdir(args[-1]):
                 dir = args[-1]
             else:
-                functions.info(f"{locale.get_by_token()} {args[-1]}", level='e')
+                functions.info(f"{locale.get_by_token(tokens.NOT_A_DIR)} {args[-1]}", level='e')
                 return
         else:
-            functions.info(f"{locale.get_by_token()} {args[-1]}")
+            functions.info(f"{locale.get_by_token(tokens.PATH_NOT_EXISTS)} {args[-1]}")
             return
     else:
         dir = os.path.defpath

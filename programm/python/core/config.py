@@ -14,4 +14,4 @@ EXPORTVAR = 5
 
 # Other
 
-DEFAULT_LANG="ru"
+DEFAULT_LANG="en"
