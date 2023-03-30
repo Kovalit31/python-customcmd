@@ -14,3 +14,15 @@ error.command.unexpected
 Unexpected command:
 error.path.notdir
 Path not a dir:
+error.path.notfile
+Path not a file:
+error.export.variable
+Can't set variable:
+command.exit.done
+Exit expected!
+error.command.read.fewargs
+Few arguments for read!
+error.export.variable.isnull
+Can't set variable, if it's null!
+error.export.variable.littleinfo
+Not enought or no info to set variable!

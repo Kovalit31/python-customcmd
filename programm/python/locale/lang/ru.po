@@ -8,3 +8,21 @@ io.file.open.try
 Попытка открыть файл
 io.file.name.display
 Файл:
+error.path.notexists
+Нет такого файла или директории:
+error.command.unexpected
+Неожиданная команда:
+error.path.notdir
+Путь не является директорией:
+error.path.notfile
+Путь не является файлом:
+error.export.variable
+Невозможно установить значение переменной:
+command.exit.done
+Выполнен выход!
+error.command.read.fewargs
+Недостаточно аргументов для команды read!
+error.export.variable.isnull
+Невозможно установить значение пустой переменной!
+error.export.variable.littleinfo
+Недостаточно или нет информации для установки переменной!
