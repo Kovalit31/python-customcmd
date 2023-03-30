@@ -4,28 +4,6 @@ from ..locale import locale, tokens
 from . import commands
 import os
 
-def get_commands_ff(_path: str, pwd=".") -> list:
-    '''
-    Gets command list from file
-    '''
-    path = os.path.join(os.path.abspath(pwd), _path) if not os.path.isabs(_path) else _path
-    commands = None
-    if not os.path.exists(path):
-        functions.info(f"{locale.get_by_token(tokens.PATH_NOT_EXISTS)} {_path}")
-        return []
-    if not os.path.isfile(os.path.realpath(path)):
-        functions.info(f"{locale.get_by_token(tokens.NOT_A_FILE)} {_path}")
-        return []
-    functions.info(f"{locale.get_by_token(tokens.FILE_OPEN_TRY)}")
-    functions.info(f"{locale.get_by_token(tokens.FILE_NAME_DISPLAY)} {_path}", level='d')
-    try:
-        file = open(path, "r")
-        commands = file.readlines()
-        file.close()
-    except Exception as e:
-        functions.info(f"{locale.get_by_token(tokens.ERROR_FILE_READ)} {e}", level='e')
-    return commands if not commands == None else []
-
 def execute(command: str, vars: dict={}) -> int:
     '''
     Execute command
@@ -71,7 +49,7 @@ def execute(command: str, vars: dict={}) -> int:
         commands.echo(_cmd_args)
         return config.CONTINUE
     elif _self_cmd == 'loadcmd':
-        file = commands.loadcmd() if commands.BASE_IMPORTED else None
-        return config.LOADFILE
+        file = commands.loadcmd(_cmd_args)
+        return config.LOADFILE, file
     else:
         return config.NOCOMMAND

@@ -26,3 +26,5 @@ error.export.variable.isnull
 Невозможно установить значение пустой переменной!
 error.export.variable.littleinfo
 Недостаточно или нет информации для установки переменной!
+error.command.loadcmd.fewargs
+Недостаточно аргументов для загрузки файла команд!

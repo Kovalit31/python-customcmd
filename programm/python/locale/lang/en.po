@@ -5,7 +5,7 @@ Can't open file:
 error.syscode.unregistered
 Unexpected syscode:
 io.file.open.try
-Try to open file:
+Trying to open file
 io.file.name.display
 File:
 error.path.notexists
@@ -26,3 +26,5 @@ error.export.variable.isnull
 Can't set variable, if it's null!
 error.export.variable.littleinfo
 Not enought or no info to set variable!
+error.command.loadcmd.fewargs
+Few arguments to load command file!

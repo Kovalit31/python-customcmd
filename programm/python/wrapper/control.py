@@ -21,7 +21,8 @@ def command_processor(args: list):
     Continuous of __main__.main().
     Processing commands.
     '''
-    commands = wrap.get_commands_ff(args[0]) if len(args) > 0 else []
+    _commands = wrap.execute(f"loadcmd {args[0]}") if len(args) > 0 else [config.LOADFILE, []]
+    commands = _commands[1] if len(_commands) > 1 else []
     variables = {"PS1": ">>> ", "_": "DTC"} 
     in_command = len(commands) != 0
     i = 0
@@ -43,6 +44,11 @@ def command_processor(args: list):
             other = args[1:]
         if syscode == config.SYSEXIT and not in_command:
             break
+        elif syscode == config.SYSEXIT and in_command:
+            commands = []
+            i = 0
+            in_command = not in_command
+            continue
         elif syscode == config.GLOBEXIT: # it terminate work anywhere :)
             break
         elif syscode == config.EXPORTVAR:
@@ -64,8 +70,13 @@ def command_processor(args: list):
             functions.info(f"{locale.get_by_token(tokens.NO_SUCH_COMMAND)} {command.split()[0]}")
         elif syscode == config.CONTINUE:
             pass
+        elif syscode == config.LOADFILE:
+            commands = other[0]
+            in_command = len(commands) != 0
+            i = 0
+            continue    
         else:
-            functions.info(f"{locale.get_by_token(tokens.ERRROR_SYSCODE_UNREGISTERED)} {syscode}", level='e')
+            functions.info(f"{locale.get_by_token(tokens.ERRROR_SYSCODE_UNREGISTERED)} {syscode}", level='w')
         
         if len(commands) - 1 != i:
             i += 1

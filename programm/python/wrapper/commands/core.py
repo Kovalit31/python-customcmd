@@ -3,6 +3,9 @@ from ...locale import locale, tokens
 
 import os
 
+# COMMANDS = ["lcls", "export", "cd", "pause", "echo", "read"]
+# HELP = {"lcls": "", "export": "", "cd": "", "pause": "", "echo": "", "read": ""}
+
 def lcls(args: list) -> None:
     '''
     Lists current directory in local system
@@ -101,3 +104,33 @@ def read(args: list) -> tuple[str, str]:
         return None, None
     inputted = input(args[1] if len(args) > 1 else "")
     return args[0], inputted
+
+def loadcmd(args: list) -> list:
+    '''
+    Gets command list from file
+    '''
+    if not len(args) > 0:
+        functions.info(f"{locale.get_by_token(tokens.FEW_ARGS_FOR_LOAD)}", level='e')
+        return []
+    pwd = "."
+    _path = args[0]
+    path = os.path.join(os.path.abspath(pwd), _path) if not os.path.isabs(_path) else _path
+    commands = None
+    if not os.path.exists(path):
+        functions.info(f"{locale.get_by_token(tokens.PATH_NOT_EXISTS)} {_path}")
+        return []
+    if not os.path.isfile(os.path.realpath(path)):
+        functions.info(f"{locale.get_by_token(tokens.NOT_A_FILE)} {_path}")
+        return []
+    functions.info(f"{locale.get_by_token(tokens.FILE_OPEN_TRY)}")
+    functions.info(f"{locale.get_by_token(tokens.FILE_NAME_DISPLAY)} {_path}", level='d')
+    try:
+        file = open(path, "r")
+        commands = file.readlines()
+        file.close()
+    except Exception as e:
+        functions.info(f"{locale.get_by_token(tokens.ERROR_FILE_READ)} {e}", level='e')
+    return commands if not commands == None else []
+
+# def help():
+#     pass
