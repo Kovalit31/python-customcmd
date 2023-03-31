@@ -28,3 +28,21 @@ error.export.variable.littleinfo
 Not enought or no info to set variable!
 error.command.loadcmd.fewargs
 Few arguments to load command file!
+error.command.db.create.fewargs
+Few args for database create!
+io.file.replace.action
+This file will be replaced:
+user.action.continue
+Continue [y]es/[n]o?
+user.action.answer.yes
+Yes
+user.action.answer.no
+No
+db.all.setid.action
+For creating new database, need to provide it ID. Please it write next:
+db.all.sign.maybe
+Databases can be signed
+db.all.sign.action
+Would you like to sign new db [y]es/[n]o?
+db.all.sign.text.action
+Please type the sign text above

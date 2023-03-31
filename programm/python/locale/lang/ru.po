@@ -28,3 +28,21 @@ error.export.variable.littleinfo
 Недостаточно или нет информации для установки переменной!
 error.command.loadcmd.fewargs
 Недостаточно аргументов для загрузки файла команд!
+error.command.db.create.fewargs
+Недостаточно аргументов для создания базы данных!
+io.file.replace.action
+Этот файл будет заменён:
+user.action.continue
+Продолжить [д]а/[н]ет?
+user.action.answer.yes
+Да
+user.action.answer.no
+Нет
+db.all.setid.action
+Для создания новой БД надо указать её ИД. Ввведите его:
+db.all.sign.maybe
+БД могут быть подписаны
+db.all.sign.action
+Хотите ли вы подписать новую БД [д]а/[н]ет?
+db.all.sign.text.action
+Напишите текст для подписи ниже

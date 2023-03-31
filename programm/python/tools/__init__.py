@@ -1,3 +1,3 @@
 from . import functions
 from . import tables
-from . import path
+from . import pathutil

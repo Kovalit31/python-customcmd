@@ -1,4 +1,5 @@
-from ...tools import functions, path
+from ...tools import functions
+from ...tools import pathutil
 from ...locale import locale, tokens
 
 import os
@@ -11,13 +12,11 @@ def lcls(args: list) -> None:
     Lists current directory in local system
     '''
     if len(args) > 0:
-        if os.path.exists(args[-1]):
-            dir = args[-1]
-        else:
-            functions.info(f"{locale.get_by_token(tokens.PATH_NOT_EXISTS)} {args[-1]}", level="e")
-            return
+        dir = pathutil.get_full_path(args[0])
     else:
         dir = "."
+    if dir == None:
+        return
     content = os.listdir(dir) if not os.path.isfile(dir) else [dir]
     part = len(content) % 5
     for x in range((len(content) - part) // 5):
@@ -63,23 +62,17 @@ def export(args: list) -> tuple[str, str]:
     val = val.replace('"', '', quote_count - quote_count % 2)
     return var, val
             
-def cd(args: list) -> None:
+def lccd(args: list) -> None:
     '''
     Cd to @param args[-1]
     '''
     if len(args) > 0:
-        if os.path.exists(args[-1]):
-            if os.path.isdir(args[-1]):
-                dir = args[-1]
-            else:
-                functions.info(f"{locale.get_by_token(tokens.NOT_A_DIR)} {args[-1]}", level='e')
-                return
-        else:
-            functions.info(f"{locale.get_by_token(tokens.PATH_NOT_EXISTS)} {args[-1]}")
+        dir = pathutil.is_dir_throw(args[-1])
+        if dir == None:
             return
     else:
         dir = os.path.defpath
-    path.realcd(dir)
+    pathutil.realcd(dir)
 
 def pause() -> None:
     '''
@@ -99,7 +92,7 @@ def read(args: list) -> tuple[str, str]:
     '''
     Reads standart input to get value of variable
     '''
-    if not len(args) > 0:
+    if len(args) < 1:
         functions.info(f"{locale.get_by_token(tokens.FEW_ARGS_FOR_READ)}")
         return None, None
     inputted = input(args[1] if len(args) > 1 else "")
@@ -109,28 +102,22 @@ def loadcmd(args: list) -> list:
     '''
     Gets command list from file
     '''
-    if not len(args) > 0:
+    if len(args) < 1:
         functions.info(f"{locale.get_by_token(tokens.FEW_ARGS_FOR_LOAD)}", level='e')
         return []
-    pwd = "."
-    _path = args[0]
-    path = os.path.join(os.path.abspath(pwd), _path) if not os.path.isabs(_path) else _path
-    commands = None
-    if not os.path.exists(path):
-        functions.info(f"{locale.get_by_token(tokens.PATH_NOT_EXISTS)} {_path}")
-        return []
-    if not os.path.isfile(os.path.realpath(path)):
-        functions.info(f"{locale.get_by_token(tokens.NOT_A_FILE)} {_path}")
+    path = pathutil.is_file_throw(args[0])
+    if path == None:
         return []
     functions.info(f"{locale.get_by_token(tokens.FILE_OPEN_TRY)}")
-    functions.info(f"{locale.get_by_token(tokens.FILE_NAME_DISPLAY)} {_path}", level='d')
+    functions.info(f"{locale.get_by_token(tokens.FILE_NAME_DISPLAY)} {args[0]}", level='d')
+    commands = []
     try:
         file = open(path, "r")
         commands = file.readlines()
         file.close()
     except Exception as e:
         functions.info(f"{locale.get_by_token(tokens.ERROR_FILE_READ)} {e}", level='e')
-    return commands if not commands == None else []
+    return commands
 
 # def help():
 #     pass
