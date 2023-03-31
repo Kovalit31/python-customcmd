@@ -43,7 +43,6 @@ def create_db(args: list):
     db_data = functions.add_to_string_with_nl(db_data, str(0))
     db_data = functions.add_to_string_with_nl(db_data, ".")
     db_data = functions.add_to_string_with_nl(db_data, str(0))
-    functions.write_to_file(path, db_data)
 
 def create_vdb():
     pass

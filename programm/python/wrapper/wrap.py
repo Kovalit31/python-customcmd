@@ -1,8 +1,5 @@
 from ..core import config
-from ..tools import functions
-from ..locale import locale, tokens
 from . import commands
-import os
 
 def execute(_command: str, vars: dict={}) -> int:
     '''
@@ -27,8 +24,9 @@ def execute(_command: str, vars: dict={}) -> int:
                     _cmd_args.append(" ")
             else:
                 _cmd_args.append(_temp[x])
-    # CORE COMMANDS
+    
     try:
+        # CORE COMMANDS
         if _self_cmd == 'quit' or _self_cmd == 'exit':
             return config.SYSEXIT
         elif _self_cmd == 'globexit':
