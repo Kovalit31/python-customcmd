@@ -1,4 +1,5 @@
-from .core import *
+from . import unix_like
+from . import bash_like
 
 try:
     from .base import *
