@@ -10,6 +10,7 @@ def main(args: list) -> None:
     loader.load_module(wrapper.commands.unix_like.ls, 'ls')
     loader.load_module(wrapper.commands.unix_like.echo, 'echo')
     loader.load_module(wrapper.commands.unix_like.cd, 'cd')
+    loader.load_module(wrapper.commands.unix_like.pwd, 'pwd')
     loader.load_module(wrapper.commands.unix_like.exit, 'exit', after=core.config.SYSEXIT)
     loader.load_module(wrapper.commands.bash_like.exec, 'exec', after=core.config.LOADFILE, unpack_output=True)
     loader.load_module(wrapper.commands.bash_like.read, 'read', after=core.config.EXPORTVAR, unpack_output=True)

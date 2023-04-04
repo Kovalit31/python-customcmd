@@ -42,4 +42,10 @@ def exit(args: list) -> None:
     '''
     It's do nothing!
     '''
-    pass 
+    pass
+
+def pwd(args: list) -> None:
+    '''
+    Prints current path
+    '''
+    print(os.path.abspath(os.path.curdir))
