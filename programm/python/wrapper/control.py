@@ -117,7 +117,7 @@ class Wrap():
             else:
                 functions.info(f"{locale.get_by_token(tokens.ERRROR_SYSCODE_UNREGISTERED)} {code}", level='w')
                 
-            if in_commands:
+            if in_command:
                 iterator += 1
                 if len(commands) == iterator:
                     in_commands = not in_commands
