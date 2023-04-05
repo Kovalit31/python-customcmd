@@ -1,3 +1,4 @@
+en
 command.pause.title
 Press enter to continue...
 error.file.read

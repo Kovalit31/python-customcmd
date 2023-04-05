@@ -1,7 +1,7 @@
 from ..core import config
 from ..locale import locale, tokens
 
-def info(string: str, level="i", debug=config.DEBUG) -> None:
+def info(string: str, level="i") -> None:
     '''
     Wraps output
     @param string (str): Output string
@@ -14,7 +14,7 @@ def info(string: str, level="i", debug=config.DEBUG) -> None:
         return
     print(f"[{'*' if _level == 'i' else '!' if _level == 'w' else '@' if _level == 'e' else '~' if _level == 'd' else '.' if _level == 'v' else '&'}] {string}")
     if _level == 'f':
-        raise Exception(string.capitalize())
+        raise Exception(string)
 
 def char_count(string: str, char: str) -> int:
     count = 0

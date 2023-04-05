@@ -1,5 +1,5 @@
 import types
-from ..core import config
+from ..core import config, tools
 from . import wrap
 from ..tools import functions
 from ..locale import locale, tokens
@@ -26,6 +26,7 @@ def read_cmds(path: str) -> list:
 
 class Wrap():
     
+    lang = config.DEFAULT_LANG
     modules = []
     call_names = []
     end = []
@@ -38,6 +39,7 @@ class Wrap():
     
     def __init__(self) -> None:
         self.variables["PS1"] = ">>> "
+        self.variables["LANG"] = config.DEFAULT_LANG
     
     def load_module(self, module: types.FunctionType, callname: str, after=config.CONTINUE, unpack_output=False, returns_code=False):
         if not type(module) == types.FunctionType:
@@ -50,7 +52,7 @@ class Wrap():
     
     def exec(self):
         if self.command.strip() == "":
-            return
+            return config.CONTINUE
         _cmd = self.command.strip().split(" ")
         _self_cmd = _cmd[0].lower()
         _cmd_args = []
@@ -61,23 +63,23 @@ class Wrap():
         for x in self.variables.keys():
             _vars_keys.append(x)
         if len(_cmd) > 1:
-            _temp = _cmd[1:]
-            for x in range(len(_temp)):
-                if _temp[x].startswith("$"):
-                    if _temp[x].lstrip("$") in _vars_keys:
-                        _cmd_args.append(self.variables[_temp[x].lstrip("$")])
-                    else:
-                        _cmd_args.append(" ")
-                else:
-                    _cmd_args.append(_temp[x])
+            _temp = " ".join(_cmd[1:])
+            _cmd_args = tools.parse_vars(_temp, self.variables)
         return wrap.exec(self.modules[index], self.end[index], fnreturns_code=self.returns_code[index], _cmd_args=_cmd_args, fnunpack=self.unpackable[index])
         
-    
     def run(self, args: list):
         commands = read_cmds(args[0]) if len(args) > 0 else []
         in_command = len(commands) > 0
         iterator = 0
         while True:
+            try:
+                curlang = self.variables["LANG"].lower()[0:2]
+                if curlang != self.lang:
+                    if locale.set_lang(curlang):
+                      functions.info(f"{locale.get_by_token(tokens.LOCALE_RELOADED)}")  
+                      self.lang = curlang
+            except:
+                pass
             try:
                 self.command = input(self.variables["PS1"]) if not in_command else commands[iterator]
             except KeyboardInterrupt or EOFError:
@@ -92,7 +94,7 @@ class Wrap():
                 i = 0
                 in_command = not in_command
                 continue
-            elif code == config.GLOBEXIT: # it terminate work anywhere :)
+            elif code == config.GLOBEXIT: # it terminate work everywhere :)
                 break
             elif code == config.EXPORTVAR:
                 if len(other) == 2:

@@ -46,3 +46,7 @@ db.all.sign.action
 Хотите ли вы подписать новую БД [д]а/[н]ет?
 db.all.sign.text.action
 Напишите текст для подписи ниже
+error.locale.nolang
+Нет такого языка:
+locale.reload.trigger
+Язык установлен!
