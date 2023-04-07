@@ -44,4 +44,3 @@ def is_dir_throw(_path: str):
     else:
         functions.info(f"{locale.get_by_token(tokens.NOT_A_DIR)} {_path}", level='e')
         return None
-    
