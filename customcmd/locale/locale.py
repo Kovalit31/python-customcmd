@@ -57,3 +57,18 @@ def set_lang(lang: str) -> bool:
         functions.info(f"{get_by_token(tokens.NO_SUCH_LOCALE)} {lang}", level="e")
         return False
     return True
+
+def get_current() -> str:
+    if pathutil.is_file_throw(os.path.join(PATH, 'c.po')) != None:
+        curlang = ''
+        try:
+            file = open(pathutil.get_full_path(os.path.join(PATH, 'c.po')))
+            curlang = file.readlines()[0]
+            file.close()
+        except Exception as e:
+            functions.info(f"Developer! Can\'t get current locale: {e}", level='d')
+            return config.DEFAULT_LANG
+        return curlang
+    else:
+        functions.info("Developer! c.po is not file or doesn't exists!", level='d')
+        return config.DEFAULT_LANG

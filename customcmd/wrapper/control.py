@@ -74,10 +74,9 @@ class Wrap():
         while True:
             try:
                 curlang = self.variables["LANG"].lower()[0:2]
-                if curlang != self.lang:
+                if curlang != locale.get_current():
                     if locale.set_lang(curlang):
-                      functions.info(f"{locale.get_by_token(tokens.LOCALE_RELOADED)}")  
-                      self.lang = curlang
+                      functions.info(f"{locale.get_by_token(tokens.LOCALE_RELOADED)}") 
             except:
                 pass
             try:
