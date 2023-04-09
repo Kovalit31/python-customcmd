@@ -85,6 +85,7 @@ class Wrap():
             try:
                 self.command = input(self.variables["PS1"]) if not in_command else commands[iterator]
             except KeyboardInterrupt or EOFError:
+                print()
                 break
             _ret = self.exec()
             code = _ret[0] if not type(_ret) == int else _ret
