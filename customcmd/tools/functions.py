@@ -62,4 +62,3 @@ def write_to_file(path: str, text: str) -> None:
         file.close()
     except Exception as e:
         info(f"{locale.get_by_token(tokens.FILE_WRITE_ERROR)} {e}", level='e')
-        
