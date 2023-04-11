@@ -53,7 +53,6 @@ def parse_vars(args: str, variables: dict):
                 have_variable_name, _temp_var = __add_to_str_or_new(_temp_var, args[x], have_variable_name)
             else:
                 have_symbols, _temp_str = __add_to_str_or_new(_temp_str, args[x], have_symbols)
-        print(_temp_str, _temp_var)
     if have_symbols:
         args_new.append(_temp_str)
     if have_variable_name:
