@@ -6,11 +6,12 @@ def parse_vars(args: str, variables: dict):
     have_symbols = False
     have_variable_name = False
     is_variable = False
+    is_string = False
     _temp_str = ""
     _temp_var = ""
     new_punctuation = " "
     for x in range(len(punctuation)):
-        if not punctuation[x] == config.VARIABLE_PREFIX:
+        if not punctuation[x] == config.VARIABLE_PREFIX and not punctuation[x] == config.STRING_1 and not punctuation[x] == config.STRING_2:
             new_punctuation += punctuation[x]
     new_punctuation = new_punctuation.strip()
     for x in range(len(args)):
@@ -33,13 +34,26 @@ def parse_vars(args: str, variables: dict):
                 is_variable = False
                 have_symbols, _temp_str = __add_to_output(_temp_str, have_symbols, _temp_var, variables)
                 have_variable_name = False
-            have_symbols = False
-            args_new.append(_temp_str)
+            if not is_string:
+                have_symbols = False
+                args_new.append(_temp_str)
+            else:
+                have_symbols, _temp_str = __add_to_str_or_new(_temp_str, " ", have_symbols)
+        elif args[x] == config.STRING_1 or args[x] == config.STRING_2:
+            if is_variable:
+                is_variable = False
+                have_symbols, _temp_str = __add_to_output(_temp_str, have_symbols, _temp_var, variables)
+                have_symbols, _temp_str = __add_to_str_or_new(_temp_str, args[x], have_symbols)
+                have_variable_name = False
+            else:
+                have_symbols, _temp_str = __add_to_str_or_new(_temp_str, args[x], have_symbols)
+            is_string = True
         else:
             if is_variable:
                 have_variable_name, _temp_var = __add_to_str_or_new(_temp_var, args[x], have_variable_name)
             else:
                 have_symbols, _temp_str = __add_to_str_or_new(_temp_str, args[x], have_symbols)
+        print(_temp_str, _temp_var)
     if have_symbols:
         args_new.append(_temp_str)
     if have_variable_name:

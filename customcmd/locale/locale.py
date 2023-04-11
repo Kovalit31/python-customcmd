@@ -62,7 +62,7 @@ def get_current() -> str:
     if pathutil.is_file_throw(os.path.join(PATH, 'c.po')) != None:
         curlang = ''
         try:
-            file = open(pathutil.get_full_path(os.path.join(PATH, 'c.po')))
+            file = open(pathutil.get_full_path(os.path.join(PATH, 'c.po')), "r", encoding="utf-8")
             curlang = file.readlines()[0]
             file.close()
         except Exception as e:
