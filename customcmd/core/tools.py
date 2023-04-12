@@ -43,10 +43,7 @@ def parse_vars(args: str, variables: dict):
             if is_variable:
                 is_variable = False
                 have_symbols, _temp_str = __add_to_output(_temp_str, have_symbols, _temp_var, variables)
-                have_symbols, _temp_str = __add_to_str_or_new(_temp_str, args[x], have_symbols)
                 have_variable_name = False
-            else:
-                have_symbols, _temp_str = __add_to_str_or_new(_temp_str, args[x], have_symbols)
             is_string = True
         else:
             if is_variable:
