@@ -17,7 +17,7 @@ def read_cmds(path: str) -> list:
         return []
     commands = []
     try:
-        file = open(_path, "r", "utf-8")
+        file = open(_path, "r", encoding="utf-8")
         commands = file.readlines()
         file.close()
     except Exception as e:
@@ -32,6 +32,7 @@ class Wrap():
     end = []
     unpackable = []
     returns_code = []
+    get_self = []
     command = " "
     # variables = []
     # values = []
@@ -41,7 +42,7 @@ class Wrap():
         self.variables["PS1"] = ">>> "
         self.variables["LANG"] = config.DEFAULT_LANG
     
-    def load_module(self, module: types.FunctionType, callname: str, after=config.CONTINUE, unpack_output=False, returns_code=False):
+    def load_module(self, module: types.FunctionType, callname: str, after=config.CONTINUE, unpack_output=False, returns_code=False, get_self=False):
         if not type(module) == types.FunctionType:
             return
         self.modules.append(module)
@@ -49,6 +50,7 @@ class Wrap():
         self.end.append(after)
         self.unpackable.append(unpack_output)
         self.returns_code.append(returns_code)
+        self.get_self.append(get_self)
     
     def exec(self):
         if self.command.strip() == "":

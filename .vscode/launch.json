@@ -8,9 +8,9 @@
             "name": "Python: модуль",
             "type": "python",
             "request": "launch",
-            "module": "python",
+            "module": "customcmd",
             "justMyCode": true,
-            "cwd": "${workspaceFolder}/programm"
+            "args": ["${workspaceFolder}/scripts/test/test1.dtc"]
         }
     ]
 }
