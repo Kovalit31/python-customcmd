@@ -1,8 +1,8 @@
 import os
 
+from . import tokens
 from ..core import config
 from ..tools import functions, pathutil
-from . import tokens
 
 PATH = os.path.join(os.path.dirname(__file__), "lang")
 

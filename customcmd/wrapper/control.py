@@ -1,6 +1,6 @@
 import types
-from ..core import config, tools
 from . import wrap
+from ..core import config, tools
 from ..tools import functions
 from ..locale import locale, tokens
 from ..tools import pathutil
