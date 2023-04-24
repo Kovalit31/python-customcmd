@@ -52,6 +52,18 @@ class Wrap():
         self.returns_code.append(returns_code)
         self.get_self.append(get_self)
     
+    def edit_function(self) -> None:
+        pass
+    
+    def load_function(self) -> None:
+        pass
+    
+    def unload_function(self) -> None:
+        pass
+    
+    def unload_module(self) -> None:
+        pass
+    
     def exec(self):
         if self.command.strip() == "":
             return config.CONTINUE
