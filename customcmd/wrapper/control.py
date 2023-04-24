@@ -99,8 +99,8 @@ class Wrap():
         self.get.pop(i)
         _exit = False
         for y in range(len(self.modules)):
-            for z in self.modules[y]:
-                if z == i:
+            for z in range(len(self.modules[y])):
+                if self.modules[y][z] == i:
                     self.modules[y].pop(z)
                     _exit = True
                     break
@@ -146,7 +146,8 @@ class Wrap():
         while True:
             try:
                 curlang = self.sh_variables["LANG"].lower()[0:2]
-                fileslang = locale.get_current().strip()
+                _fileslang = locale.get_current()
+                fileslang = _fileslang if _fileslang == None else _fileslang.strip() 
                 if not curlang == fileslang:
                     if locale.set_lang(curlang):
                       functions.info(f"{locale.get_by_token(tokens.LOCALE_RELOADED)}") 

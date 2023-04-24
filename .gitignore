@@ -130,4 +130,4 @@ dmypy.json
 programm/my.csv
 
 # Project specific
-lang/c.po
+customcmd/locale/lang/c.po

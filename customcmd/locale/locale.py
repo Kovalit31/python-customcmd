@@ -67,8 +67,8 @@ def get_current() -> str:
             file.close()
         except Exception as e:
             functions.info(f"Developer! Can\'t get current locale: {e}", level='d')
-            return config.DEFAULT_LANG
+            return None
         return curlang
     else:
         functions.info("Developer! c.po is not file or doesn't exists!", level='d')
-        return config.DEFAULT_LANG
+        return None
