@@ -38,5 +38,5 @@ loader.load_module(function, "cmdname")
 
 to __main__.py
 
-Also you can add after parameter, to add code after execution (see [overview.md](overview)'s Error codes),  
+Also you can add after parameter, to add code after execution (see [overview](overview.md)'s Error codes),  
 return unpacking (unusable) or returns_code, if your function returns code from Error codes.
