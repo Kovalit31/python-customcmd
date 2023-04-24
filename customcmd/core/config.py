@@ -6,16 +6,21 @@ VERBOSE = False
 
 # Exit values
 
-SYSEXIT = 0
-CONTINUE = 1
-NOCOMMAND = 127 # From bash)
-LOADFILE = 3 # Load file commandly
-GLOBEXIT = 4 # Need for file execution
-EXPORTVAR = 5
+SYS_EXEC_STOP = 1
+SYS_EXEC_CONTINUE = 0
+SYS_EXEC_CMD_NFOUND = 127 # From bash)
+SYS_EXEC_EXECFILE = 3 # Load file commandly
+SYS_MODULE_LOAD = 6
+SYS_MODULE_UNLOAD = 7
+SYS_FUNCTION_LOAD = 8
+SYS_FUNCTION_UNLOAD = 9
+SYS_FUNCTION_SETUP = 10
+SYS_EXEC_FORCESTOP = 4 # Need for file execution
+SHELL_VARS_EXPORT = 5
 
 # Other
 
-DEFAULT_LANG = "ru"
+DEFAULT_LANG = "en"
 
 # Variable set
 

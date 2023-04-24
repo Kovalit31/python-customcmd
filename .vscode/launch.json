@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "customcmd",
             "justMyCode": true,
-            "args": ["${workspaceFolder}/scripts/test/test1.dtc"]
+            // "args": ["${workspaceFolder}/scripts/test/test1.dtc"]
         }
     ]
 }

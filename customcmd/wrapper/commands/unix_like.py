@@ -38,11 +38,11 @@ def echo(args: list) -> None:
     quote_count = functions.char_count(joined_args, '"')
     print(joined_args.replace('"', "", quote_count - quote_count % 2))
 
-def exit(_: list) -> None:
-    '''
-    It's do nothing!
-    '''
-    pass
+# def exit(_: list) -> None:
+#     '''
+#     It's do nothing!
+#     '''
+#     pass
 
 def pwd(_: list) -> None:
     '''
