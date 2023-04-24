@@ -7,7 +7,7 @@ wrapper.control.Wrap() - Main runners constructor
 It's .run(args) method allows to start interactive console.
 
 The wrapper.commands package contains modules (see [modules](modules.md)), what contains functions
-This functions can be imported with .import_module()
+The modules with this functions can be imported with .import_module()
 
 ## Error codes and print handling
 
