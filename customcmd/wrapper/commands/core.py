@@ -10,20 +10,4 @@ def returning(args: list) -> list:
     '''
     return args
 
-# TODO: Do post-processing and get neccessary data
-
-def insmod(args: list) -> str:
-    pass
-
-def rmmod(args: list) -> str:
-    pass
-
-def insfunc(args: list) -> tuple[str, str]:
-    pass
-
-def rmfunc(args: list) -> str:
-    pass
-
-def chfunc(args: list) -> tuple[str, str, int, bool, bool, bool]:
-    pass
-
+# Note: returning function need to be unloaded and it need to be added with other callname!

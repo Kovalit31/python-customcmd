@@ -1,12 +1,10 @@
 import os
-from . import functions
-from ..locale import locale, tokens
+from . import global_functions
+from ..locale import locale
 
-def realcd(path: str):
-    '''
-    Set's pwd to @param path
-    '''
-    os.chdir(os.path.abspath(path) if os.path.exists(path) else os.path.defpath)
+# ===================
+#  Path constructors
+# ===================
 
 def get_full_path(_path: str, return_else=False):
     '''
@@ -16,9 +14,13 @@ def get_full_path(_path: str, return_else=False):
     if os.path.exists(path) or return_else:
         return os.path.realpath(path)
     else:
-        functions.info(f"{locale.get_by_token(tokens.PATH_NOT_EXISTS)} {_path}")
+        global_functions.info(f"{locale.get_by_token('error.path.notexists')} {_path}")
         return None
     
+# ===================
+#    Type checker
+# ===================
+
 def is_file_throw(_path: str):
     '''
     Checks and get out, if path is file, else returns None
@@ -29,7 +31,7 @@ def is_file_throw(_path: str):
     if os.path.isfile(path):
         return path
     else:
-        functions.info(f"{locale.get_by_token(tokens.NOT_A_FILE)} {_path}", level='e')
+        global_functions.info(f"{locale.get_by_token('error.path.notfile')} {_path}", level='e')
         return None
     
 def is_dir_throw(_path: str):
@@ -42,5 +44,5 @@ def is_dir_throw(_path: str):
     if os.path.isdir(path):
         return path
     else:
-        functions.info(f"{locale.get_by_token(tokens.NOT_A_DIR)} {_path}", level='e')
+        global_functions.info(f"{locale.get_by_token('error.path.notdir')} {_path}", level='e')
         return None

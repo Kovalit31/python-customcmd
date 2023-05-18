@@ -1,5 +1,5 @@
-from ...tools import functions, pathutil
-from ...locale import locale, tokens
+from customcmd.tools import global_functions, pathutil
+from customcmd.locale import locale
 
 def export(args: list) -> tuple[str, str]:
     '''
@@ -35,7 +35,7 @@ def export(args: list) -> tuple[str, str]:
             _value.append(args_remapped[x])       
     var = "_".join(_variable)
     val = " ".join(_value)
-    quote_count = functions.char_count(val, '"')
+    quote_count = global_functions.char_count(val, '"')
     val = val.replace('"', '', quote_count - quote_count % 2)
     return var, val
     
@@ -44,7 +44,7 @@ def read(args: list) -> tuple[str, str]:
     Reads standart input to get value of variable
     '''
     if len(args) < 1:
-        functions.info(f"{locale.get_by_token(tokens.FEW_ARGS_FOR_READ)}")
+        global_functions.info(f"{locale.get_by_token('tokens.FEW_ARGS_FOR_READ')}")
         return None, None
     inputted = input(args[1] if len(args) > 1 else "")
     return args[0], inputted
@@ -54,18 +54,18 @@ def exec(args: list) -> list:
     Gets command list from file
     '''
     if len(args) < 1:
-        functions.info(f"{locale.get_by_token(tokens.FEW_ARGS_FOR_LOAD)}", level='e')
+        global_functions.info(f"{locale.get_by_token('tokens.FEW_ARGS_FOR_LOAD')}", level='e')
         return []
     path = pathutil.is_file_throw(args[0])
     if path == None:
         return []
-    functions.info(f"{locale.get_by_token(tokens.FILE_OPEN_TRY)}")
-    functions.info(f"{locale.get_by_token(tokens.FILE_NAME_DISPLAY)} {args[0]}", level='d')
+    global_functions.info(f"{locale.get_by_token('tokens.FILE_OPEN_TRY')}")
+    global_functions.info(f"{locale.get_by_token('tokens.FILE_NAME_DISPLAY')} {args[0]}", level='d')
     commands = []
     try:
         file = open(path, "r")
         commands = file.readlines()
         file.close()
     except Exception as e:
-        functions.info(f"{locale.get_by_token(tokens.ERROR_FILE_READ)} {e}", level='e')
+        global_functions.info(f"{locale.get_by_token('tokens.ERROR_FILE_READ')} {e}", level='e') # TODO Replace all tokens.
     return commands

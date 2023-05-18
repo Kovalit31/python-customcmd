@@ -21,10 +21,6 @@ SHELL_VARS_EXPORT = 5
 # Other
 
 DEFAULT_LANG = "en"
-
-# Variable set
-
-VARIABLE_PREFIX = "$" # ONLY CHAR! FROM PUNCTUATION!
-CMD_DELIMITER = " "
-STRING_1 = "\""
-STRING_2 = "'"
+DEFAULT_TOKENIZER = "bash"
+DEFAULT_MODULES = ["bash_like", "unix_like"]
+DEFAULT_UNLOADS_FUNC = []

@@ -1,12 +1,12 @@
 import os
-from ...tools import functions, pathutil
+from customcmd.tools import global_functions, pathutil
 
 def ls(args: list) -> None:
     '''
     Lists current directory in local system
     '''
-    if len(args) > 0:
-        dir = pathutil.get_full_path(args[0])
+    if len(args) > 1:
+        dir = pathutil.get_full_path(args[1])
     else:
         dir = "."
     if dir == None:
@@ -23,29 +23,26 @@ def cd(args: list) -> None:
     Cd to @param args[-1]
     '''
     if len(args) > 0:
-        dir = pathutil.is_dir_throw(args[-1])
-        if dir == None:
+        path = pathutil.is_dir_throw(args[-1])
+        if path == None:
             return
     else:
-        dir = os.path.defpath
-    pathutil.realcd(dir)
+        path = os.path.defpath
+    os.chdir(os.path.abspath(path) if os.path.exists(path) else os.path.defpath)
 
 def echo(args: list) -> None:
     '''
     Echo all in @param args
     '''
     joined_args = " ".join(args)
-    quote_count = functions.char_count(joined_args, '"')
+    quote_count = global_functions.char_count(joined_args, '"')
     print(joined_args.replace('"', "", quote_count - quote_count % 2))
 
-# def exit(_: list) -> None:
-#     '''
-#     It's do nothing!
-#     '''
-#     pass
-
-def pwd(_: list) -> None:
+def pwd(_: list, _return_path=False) -> None:
     '''
     Prints current path
     '''
-    print(os.path.abspath(os.path.curdir))
+    path = os.path.abspath(os.path.curdir)
+    if _return_path:
+        return path
+    print(path)

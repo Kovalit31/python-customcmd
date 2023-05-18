@@ -1,9 +1,6 @@
 import sys
-from . import tools
 from . import wrapper
 from . import core
-
-info = tools.functions.info
 
 def main(args: list) -> None:
     loader = wrapper.control.Wrap()
