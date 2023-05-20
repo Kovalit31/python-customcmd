@@ -20,6 +20,7 @@ def get_by_token(token: str, lang=None) -> str:
         global_functions.info(f"Can't get locale! {e}", level='e')
         return f"{{{token}}}"
     lang = data[0].strip().lower() if lang == None else lang
+    __parse_po(data[1:])
     for x in range(len(data)):
         if data[x].strip() == token.lower().strip():
             try:
@@ -70,3 +71,29 @@ def get_current() -> str:
     else:
         global_functions.info("Developer! c.po is not file or doesn't exists!", level='d')
         return None
+
+def __parse_po(data: list[str]) -> tuple[list[dict], list[str], dict]:
+    _data: list[dict] = []
+    for x in range(len(data)):
+        if data[x].strip().startswith('~'):
+            _temp = data[x].strip()[1:].split(".")
+            for y in range(len(_temp)):
+                if len(_data) == y:
+                    _data.append(dict())
+                if not ".".join(_temp[:y]+[_temp[y]]) in global_functions.get_dict_keys(_data[y]):
+                    if y == 0:
+                        _data[y][_temp[y]] = []
+                        continue
+                    _data[y-1][".".join(_temp[:y-1]+[_temp[y-1]])].append(".".join(_temp[:y]+[_temp[y]]))
+                    _data[y][".".join(_temp[:y]+[_temp[y]])] = []
+                    if y == len(_temp) - 1:
+                        _data[y][".".join(_temp[:y]+[_temp[y]])].append(data[x+1]) if len(data) > x else _data[y][".".join(_temp[:y]+[_temp[y]])].append("")
+                    continue
+                # if not _temp[y] in _saved_keys:
+                #     _saved_keys.append(_temp[y])
+                #     _aliases[_temp[y]] = _saved_keys.index(_temp[y])
+                # if not y == 0:
+                #     _data[y-1][_aliases[_temp[y-1]]].append(_aliases[_temp[y]])
+                # _data[y][_aliases[_temp[y]]] = [] if not _aliases[_temp[y]] in global_functions.get_dict_keys(_data[y]) else global_functions.do_nothing()
+    print(_data)
+                

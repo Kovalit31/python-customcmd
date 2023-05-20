@@ -10,15 +10,8 @@ class Wrap():
     modules = dict()
     commands = dict()
     sh_variables = dict()
-    functions = []
-    callnames = []
-    endcode = []
-    unpack = []
-    retcode = []
-    get = []
     _command = " "
 
-    
     def __init__(self) -> None:
         self.tokenizer = importer.import_module(config.DEFAULT_TOKENIZER, os.path.join(os.path.dirname(__file__), "tokenizers", config.DEFAULT_TOKENIZER)+".py")
         self.sh_variables["PS1"] = "%u@%h:%d\$"
@@ -32,67 +25,51 @@ class Wrap():
         self.modules[modulename] = []
         for x in dir(module):
             if not x.startswith("_") and type(getattr(module, x)) == types.FunctionType:
-                if x in self.functions:
+                if x in global_functions.get_dict_keys(self.commands):
                     if not functions.interactive("Oops: There was an dublicate of function!", "Do you want to continue? [y]es/[n]o"):
                         return
                     else:
                         self.unload_function(x)
                 self.load_function(getattr(module, x), x)
-                self.modules[modulename].append(len(self.functions) - 1)
+                self.modules[modulename].append(x)
     
-    def unload_module(self, module_name: str) -> None:
+    def unload_module(self, modulename: str) -> None:
         try:
-            a = copy.deepcopy(self.modules[module_name])
+            a = copy.deepcopy(self.modules[modulename])
         except:
             return
-        b = copy.deepcopy(self.callnames)
+        b = global_functions.get_dict_keys(self.commands)
         for x in range(len(a)):
             self.unload_function(b[a[x]])
-        self.modules.pop(module_name, None)
+        self.modules.pop(modulename, None)
     
-    def load_function(self, function: types.FunctionType, callname: str, endcode=config.SYS_EXEC_CONTINUE, unpack=False, retcode=False, get=False) -> None:
+    def load_function(self, function: types.FunctionType, callname: str, endcode=config.SYS_EXEC_CONTINUE, unpack=False, retcode=False, get=[]) -> None:
         if type(function) != types.FunctionType:
             return
-        if callname in self.callnames:
+        if callname in global_functions.get_dict_keys(self.commands):
             return
-        if function in self.functions:
-            return
-        self.functions.append(function)
-        self.callnames.append(callname)
-        self.endcode.append(endcode)
-        self.unpack.append(unpack)
-        self.retcode.append(retcode)
-        self.get.append(get)
+        self.commands[callname] = [function, endcode, unpack, retcode, get]
         
     def edit_function(self, callname: str, callname_new = None, after=None, unpack=None, retcode=None, get=None) -> None:
-        try:
-            i = self.callnames.index(callname)
-        except ValueError:
+        if not callname in global_functions.get_dict_keys(self.commands):
             return
-        _func = self.functions[i]
-        _callname = callname_new if callname_new != None else self.callnames[i]
-        _after = after if after != None else self.endcode[i]
-        _unpack = unpack if unpack != None else self.unpack[i]
-        _retcode = retcode if retcode != None else self.retcode[i]
-        _get = get if get != None else self.get[i]
+        _func = self.commands[callname][0]
+        _callname = callname_new if callname_new != None else callname
+        _after = after if after != None else self.commands[callname][1]
+        _unpack = unpack if unpack != None else self.commands[callname][2]
+        _retcode = retcode if retcode != None else self.commands[callname][3]
+        _get = get if get != None else self.commands[callname][4]
         self.unload_function(callname)
         self.load_function(_func, _callname, endcode=_after, unpack=_unpack, retcode=_retcode, get=_get)
     
     def unload_function(self, callname: str) -> None:
-        try:
-            i = self.callnames.index(callname)
-        except ValueError:
+        if not callname in global_functions.get_dict_keys(self.commands):
             return
-        self.functions.pop(i)
-        self.callnames.pop(i)
-        self.endcode.pop(i)
-        self.unpack.pop(i)
-        self.retcode.pop(i)
-        self.get.pop(i)
+        self.commands.pop(callname)
         _exit = False
-        for y in self.modules.keys():
+        for y in global_functions.get_dict_keys(self.modules):
             for z in range(len(self.modules[y])):
-                if self.modules[y][z] == i:
+                if self.modules[y][z] == callname:
                     self.modules[y].pop(z)
                     _exit = True
                     break
@@ -103,32 +80,25 @@ class Wrap():
         if self._command.strip() == "":
             return config.CONTINUE
         _cmd_data = self.tokenizer.cmd_parse(self._command, self.sh_variables)
-        try:
-            index = self.callnames.index(_cmd_data[0])
-        except:
-            index = None
-        if index == None:
+        if not _cmd_data[0] in global_functions.get_dict_keys(self.commands):
             return config.SYS_EXEC_CMD_NFOUND
-        return wrap.exec(self.functions[index], self.endcode[index], fnreturns_code=self.retcode[index], _cmd_args=_cmd_data, fnunpack=self.unpack[index])
+        return wrap.exec(self.commands[_cmd_data[0]][0], self.commands[_cmd_data[0]][1], fnreturns_code=self.commands[_cmd_data[0]][3], _cmd_args=_cmd_data, fnunpack=self.commands[_cmd_data[0]][2])
         
     def run(self, args: list):
         commands = functions.read_from_file(args[0]) if len(args) > 0 else []
         in_command = len(commands) > 0
         iterator = 0
         while True:
-            try:
-                curlang = self.sh_variables["LANG"].lower()[0:2]
-                _fileslang = locale.get_current()
-                fileslang = _fileslang if _fileslang == None else _fileslang.strip() 
-                if not curlang == fileslang:
-                    if locale.set_lang(curlang):
-                      global_functions.info(f"{locale.get_by_token('locale.reload.trigger')}") 
-                else:
-                    pass
-            except:
+            curlang = self.sh_variables["LANG"].lower()[0:2]
+            _fileslang = locale.get_current()
+            fileslang = _fileslang if _fileslang == None else _fileslang.strip()
+            if not curlang == fileslang:
+                if locale.set_lang(curlang):
+                    global_functions.info(f"{locale.get_by_token('data.locale.trigger.reload')}") 
+            else:
                 pass
             try:
-                self._command = input(self.tokenizer.ps1_parse(self.sh_variables["PS1"], tuple([self.callnames, self.functions]), variables = self.sh_variables)) if not in_command else commands[iterator]
+                self._command = input(self.tokenizer.ps1_parse(self.sh_variables["PS1"], self.commands, variables = self.sh_variables)) if not in_command else commands[iterator]
             except KeyboardInterrupt or EOFError:
                 print() # The fix :)
                 break
@@ -158,11 +128,12 @@ class Wrap():
             elif code == config.SYS_EXEC_CMD_NFOUND:
                 global_functions.info(f"{locale.get_by_token('error.command.unexpected')} {self._command.split()[0]}")
             elif code == config.SYS_EXEC_CONTINUE:
-                pass
+                if len(other) > 0:
+                    global_functions.info(f"{locale.get_by_token('exec.sys.cmd')}")
             elif code == config.SYS_EXEC_EXECFILE:
                 commands = other[0]
                 in_command = len(commands) != 0
-                i = 0
+                iterator = 0
                 continue
             elif code == config.SYS_MODULE_LOAD:
                 _path = other[0]

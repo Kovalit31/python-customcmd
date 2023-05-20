@@ -5,6 +5,7 @@ def exec(function: types.FunctionType, return_code: int, fnreturns_code=False, _
     try:
         ret = function(_cmd_args)
         _return = ret if type(ret) != int or ret != None else [ret]
+        print(function, return_code, fnreturns_code, _cmd_args, fnunpack)
         _final = tuple()
         code = return_code if not fnreturns_code else _return[0] if len(_return) > 0 else config.SYS_EXEC_CONTINUE
         _final += tuple([code])

@@ -1,42 +1,46 @@
-command.pause.title
+~exec.cmd.pause.main
 Press enter to continue...
-error.file.read
-Can't open file:
-error.syscode.unregistered
-Unexpected syscode:
-io.file.open.try
-Trying to open file
-io.file.name.display
-File:
-error.path.notexists
-No such file or directory:
-error.command.unexpected
+~io.file.action.read.error
+Can't open file {file}: {error}!
+~exec.sys.code.error.unexpected
+Unexpected syscode: {code}!
+~io.path.file.action.open@debug
+Trying to open file {file}...
+~io.path.file.action.open
+@user.ue.wait
+~io.path.error.notexists
+No such file or directory: {path}!
+~exec.sys.cmd.unexpected
 Unexpected command:
-error.path.notdir
-Path not a dir:
-error.path.notfile
-Path not a file:
-error.export.variable
-Can't set variable:
-command.exit.done
+~io.path.error.notdir
+Path not a dir: {path}!
+~io.path.error.notfile
+Path not a file: {path}!
+~exec.sys.export.error
+Can't set variable: {error}!
+~exec.sys.exit.main@debug
 Exit expected!
-error.command.read.fewargs
-Few arguments for read!
-error.export.variable.isnull
+~exec.sys.exit.main
+Exit
+~exec.cmd.*.error.fewargs
+Few arguments for command {!auto}!
+~exec.sys.export.error.assert.variable.isnull
 Can't set variable, if it's null!
-error.export.variable.littleinfo
+~exec.sys.export.error.noinfo
 Not enought or no info to set variable!
-error.command.loadcmd.fewargs
+~exec.cmd.loadcmd.error.fewargs
 Few arguments to load command file!
-io.file.replace.action
+~io.path.file.object.action.replace
 This file will be replaced:
-user.action.continue
+~user.ue.action.continue
 Continue [y]es/[n]o?
-user.action.answer.yes
+~user.ue.action.answer.yes
 Yes
-user.action.answer.no
+~user.ue.action.answer.no
 No
-error.locale.nolang
+~data.locale.error.po.nolang
 No such language:
-locale.reload.trigger
+~data.locale.trigger.reload
 Locale reloaded!
+~user.ue.wait
+Wait, please...

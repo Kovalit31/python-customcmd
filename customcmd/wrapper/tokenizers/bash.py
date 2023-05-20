@@ -7,8 +7,8 @@ CMD_DELIMITER = " "
 STRING_1 = "\""
 STRING_2 = "'"
 
-def ps1_parse(ps1: str, functions: tuple[list, list], variables: dict = dict()) -> str:
-    return ps1 if not 'pwd' in functions[0] else functions[1][functions[0].index("pwd")]([], _return_path = True) + "$"
+def ps1_parse(ps1: str, functions: dict, variables: dict = dict()) -> str:
+    return ps1 if not 'pwd' in global_functions.get_dict_keys(functions) else functions['pwd'][0]([], _return_path = True) + "$"
 
 def cmd_parse(args: str, variables: dict):
     mapped = []

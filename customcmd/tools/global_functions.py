@@ -10,18 +10,18 @@ from ..core import config
 def str_to_list(string: str) -> list:
     return [string[x] for x in range(len(string))]
 
-def binary_search(where: list, what) -> tuple[int, int]:
-    where.sort()
-    _arr = copy.deepcopy(where)
-    while True:
-        if len(_arr) == 0:
-            return -1, -1
-        if _arr[math.floor(len(_arr)/2)-1] < what:
-            _arr = _arr[math.floor(len(_arr)/2)-1:]
-        elif _arr[math.floor(len(_arr)/2)-1] > what:
-            _arr = _arr[:math.floor(len(_arr)/2)-1]
-        else:
-            return math.floor(len(_arr)/2)-1, math.floor(len(_arr)/2)-1
+# def binary_search(where: list, what) -> tuple[int, int]:
+#     where.sort()
+#     _arr = copy.deepcopy(where)
+#     while True:
+#         if len(_arr) == 0:
+#             return -1, -1
+#         if _arr[math.floor(len(_arr)/2)-1] < what:
+#             _arr = _arr[math.floor(len(_arr)/2)-1:]
+#         elif _arr[math.floor(len(_arr)/2)-1] > what:
+#             _arr = _arr[:math.floor(len(_arr)/2)-1]
+#         else:
+#             return math.floor(len(_arr)/2)-1, math.floor(len(_arr)/2)-1
 
 # =====================
 #         UE
@@ -57,8 +57,13 @@ def clever_add_str(_str: str, _add: str) -> str:
 
 def char_count(string: str, char: str) -> int:
     list_of = str_to_list(string)
-    start, end = binary_search(list_of, char)
-    return end - start
+    list_of.sort()
+    try:
+        start = list_of.index(char)
+        end = list_of[::-1].index(char)
+        return start, len(list_of)-1-end
+    except:
+        return -1, -1
 
 # ==================
 #       Other
