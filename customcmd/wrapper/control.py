@@ -78,7 +78,7 @@ class Wrap():
     
     def exec(self):
         if self._command.strip() == "":
-            return config.CONTINUE
+            return config.SYS_EXEC_CONTINUE
         _cmd_data = self.tokenizer.cmd_parse(self._command, self.sh_variables)
         if not _cmd_data[0] in global_functions.get_dict_keys(self.commands):
             return config.SYS_EXEC_CMD_NFOUND

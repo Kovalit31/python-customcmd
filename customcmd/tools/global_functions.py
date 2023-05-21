@@ -90,3 +90,6 @@ def merge_dicts(dict1: dict, dict2: dict, _recursively = False) -> dict:
     print(updates)
     if len(dict_out_keys) == 0:
         return dict_out
+
+def get_list_from_to_including(arr: list, end: int, start: int = 0) -> list:
+    return arr[start:end]+[arr[end]]
