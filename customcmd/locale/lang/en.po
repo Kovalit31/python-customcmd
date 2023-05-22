@@ -1,7 +1,9 @@
 ~exec.cmd.pause.main
 Press enter to continue...
-~io.file.action.read.error
+~io.path.file.action.read.error
 Can't open file {file}: {error}!
+~io.path.file.action.write.error
+Can't write data to file {file}: {error}!
 ~exec.sys.code.error.unexpected
 Unexpected syscode: {code}!
 ~io.path.file.action.open@debug
@@ -23,7 +25,7 @@ Exit expected!
 ~exec.sys.exit.main
 Exit
 ~exec.cmd.*.error.fewargs
-Few arguments for command {!auto}!
+Few arguments for command {cmd}!
 ~exec.sys.export.error.assert.variable.isnull
 Can't set variable, if it's null!
 ~exec.sys.export.error.noinfo

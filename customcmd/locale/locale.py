@@ -20,17 +20,10 @@ def get_by_token(token: str, lang=None) -> str:
         global_functions.info(f"Can't get locale! {e}", level='e')
         return f"{{{token}}}"
     lang = data[0].strip().lower() if lang == None else lang
-    print(__get_candidate(__parse_po(data[1:]), token))
-    for x in range(len(data)):
-        if data[x].strip() == token.lower().strip():
-            try:
-                return data[x+1].strip()
-            except Exception as e:
-                global_functions.info(f"Developer! File {f'{lang}.po'} not fully edited!", level="d")
-                return f"{{{token}}}"
-    else:
-        global_functions.info(f"Developer! File {f'{lang}.po'} doesn't content {token}!", level='d')
+    ret = __get_candidate(__parse_po(data[1:]), token)
+    if ret == None:
         return f"{{{token}}}"
+    return ret
 
 def set_lang(lang: str) -> bool:
     '''
@@ -81,10 +74,8 @@ def __parse_po(data: list[str]) -> list[dict]:
                 if len(_data) == y:
                     _data.append(dict())
                 if not ".".join(global_functions.get_list_from_to_including(_temp, y)) in global_functions.get_dict_keys(_data[y]):
-                    if y == 0:
-                        _data[y][_temp[y]] = []
-                        continue
-                    _data[y-1][".".join(global_functions.get_list_from_to_including(_temp, y-1))].append(".".join(global_functions.get_list_from_to_including(_temp, y)))
+                    if y != 0:
+                        _data[y-1][".".join(global_functions.get_list_from_to_including(_temp, y-1))].append(".".join(global_functions.get_list_from_to_including(_temp, y)))
                     _data[y][".".join(_temp[:y]+[_temp[y]])] = [None]
                     if y == len(_temp) - 1:
                         _data[y][".".join(global_functions.get_list_from_to_including(_temp, y))][0] = data[x+1] if len(data) > x else ""
@@ -93,17 +84,17 @@ def __parse_po(data: list[str]) -> list[dict]:
 
 def __get_candidate(data: list[dict], token: str) -> str:
     _temp = token.strip().split(".")
-    _next_token = None
+    _next_token = str()
     for x in range(len(_temp)):
         if len(data)-1 == x:
             return
-        if not global_functions.get_list_from_to_including(_temp, x) in global_functions.get_dict_keys(data[x]):
+        if not ".".join(global_functions.get_list_from_to_including(_temp, x)) in global_functions.get_dict_keys(data[x]):
+            if x == 0:
+                return
+            if not ".".join(global_functions.get_list_from_to_including(_temp, x-1)+["*"]) in global_functions.get_dict_keys(data[x]):
+                return
+        _next_token = ".".join(global_functions.get_list_from_to_including(_temp, x))
+    else:
+        if data[x][_next_token][0] == None:
             return
-        if len(_temp)-1 != x:
-            if not global_functions.get_list_from_to_including(_temp, x+1) in global_functions.get_dict_keys(data[x+1]):
-                return
-            _next_token = data[x][global_functions.get_list_from_to_including(_temp, x)]
-        else:
-            if data[x][_next_token][0] == None:
-                return
-            return data[x][_next_token][0]
+        return data[x][_next_token][0]

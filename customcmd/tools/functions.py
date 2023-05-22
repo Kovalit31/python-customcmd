@@ -5,7 +5,7 @@ from . import pathutil, global_functions
 #   User experience
 # ===================
 
-def interactive(action: str, question: str, yes_locall=locale.get_by_token("user.action.answer.yes"), no_locall=locale.get_by_token("user.action.answer.no"), yes_eng = locale.get_by_token("user.action.answer.yes", lang="en"), no_eng = locale.get_by_token("user.action.answer.no", lang="en"), _additional=None) -> bool:
+def interactive(action: str, question: str, yes_locall=locale.get_by_token("user.ue.action.answer.yes"), no_locall=locale.get_by_token("user.ue.action.answer.no"), yes_eng = locale.get_by_token("user.ue.action.answer.yes", lang="en"), no_eng = locale.get_by_token("user.ue.action.answer.no", lang="en"), _additional=None) -> bool:
     answer = input(f"{action}{' ' +_additional if not _additional == None else ''}. {question} ").lower()
     yes_l = yes_locall.lower()
     yes_d = yes_eng.lower()
@@ -31,12 +31,12 @@ def write_to_file(path: str, text: str) -> None:
         file.write(text)
         file.close()
     except Exception as e:
-        global_functions.info(f"{locale.get_by_token('error.io.file.write')} {e}", level='e')
+        global_functions.info(f"{locale.get_by_token('io.path.file.action.write.error').format(file=path, error=e)}", level='e')
 
 def read_from_file(path: str) -> None:
     realpath = pathutil.is_file_throw(path)
     if realpath == None:
-        return [] # TODO: Not file
+        return []
     try:
         file = open(realpath, 'r',  encoding='utf-8')
         ret = file.readlines()

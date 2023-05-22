@@ -44,7 +44,7 @@ def read(args: list) -> tuple[str, str]:
     Reads standart input to get value of variable
     '''
     if len(args) < 1:
-        global_functions.info(f"{locale.get_by_token('tokens.FEW_ARGS_FOR_READ')}")
+        global_functions.info(f"{locale.get_by_token('exec.cmd.read.error.fewargs')}")
         return None, None
     inputted = input(args[1] if len(args) > 1 else "")
     return args[0], inputted
