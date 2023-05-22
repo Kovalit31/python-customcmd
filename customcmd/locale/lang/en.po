@@ -12,8 +12,8 @@ Trying to open file {file}...
 @user.ue.wait
 ~io.path.error.notexists
 No such file or directory: {path}!
-~exec.sys.cmd.unexpected
-Unexpected command:
+~exec.sys.cmd.error.unexpected
+Unexpected command: {command}!
 ~io.path.error.notdir
 Path not a dir: {path}!
 ~io.path.error.notfile
@@ -25,7 +25,7 @@ Exit expected!
 ~exec.sys.exit.main
 Exit
 ~exec.cmd.*.error.fewargs
-Few arguments for command {cmd}!
+Few arguments for command {!auto}!
 ~exec.sys.export.error.assert.variable.isnull
 Can't set variable, if it's null!
 ~exec.sys.export.error.noinfo
@@ -41,8 +41,10 @@ Yes
 ~user.ue.action.answer.no
 No
 ~data.locale.error.po.nolang
-No such language:
+No such language: {lang}!
 ~data.locale.trigger.reload
 Locale reloaded!
 ~user.ue.wait
 Wait, please...
+~exec.sys.cmd.error
+Command exited with error: {error}!

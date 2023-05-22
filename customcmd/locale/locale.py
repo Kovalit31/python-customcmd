@@ -23,7 +23,10 @@ def get_by_token(token: str, lang=None) -> str:
     ret = __get_candidate(__parse_po(data[1:]), token)
     if ret == None:
         return f"{{{token}}}"
-    return ret
+    candidate, auto = ret
+    if auto != None:
+        candidate = candidate.replace("{!auto}", auto)
+    return candidate
 
 def set_lang(lang: str) -> bool:
     '''
@@ -46,7 +49,7 @@ def set_lang(lang: str) -> bool:
             global_functions.info(f"Developer! Can't create default locale file, because this error occurs: {e}", level="d")
             return False
     else:
-        global_functions.info(f"{get_by_token('tokens.NO_SUCH_LOCALE')} {lang}", level="e")
+        global_functions.info(f"{get_by_token('data.locale.error.po.nolang').format(lang=lang)}", level="e")
         return False
     return True
 
@@ -85,6 +88,7 @@ def __parse_po(data: list[str]) -> list[dict]:
 def __get_candidate(data: list[dict], token: str) -> str:
     _temp = token.strip().split(".")
     _next_token = str()
+    auto = None
     for x in range(len(_temp)):
         if len(data)-1 == x:
             return
@@ -93,8 +97,11 @@ def __get_candidate(data: list[dict], token: str) -> str:
                 return
             if not ".".join(global_functions.get_list_from_to_including(_temp, x-1)+["*"]) in global_functions.get_dict_keys(data[x]):
                 return
+            else:
+                auto = _temp[x]
+                _temp[x] = "*"
         _next_token = ".".join(global_functions.get_list_from_to_including(_temp, x))
     else:
         if data[x][_next_token][0] == None:
             return
-        return data[x][_next_token][0]
+        return data[x][_next_token][0], auto

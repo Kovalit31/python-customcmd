@@ -5,8 +5,9 @@ def ls(args: list) -> None:
     '''
     Lists current directory in local system
     '''
+    args = args[1:]
     if len(args) > 1:
-        dir = pathutil.get_full_path(args[1])
+        dir = pathutil.get_full_path(args[0])
     else:
         dir = "."
     if dir == None:
@@ -22,6 +23,7 @@ def cd(args: list) -> None:
     '''
     Cd to @param args[-1]
     '''
+    args = args[1:]
     if len(args) > 0:
         path = pathutil.is_dir_throw(args[-1])
         if path == None:
@@ -34,6 +36,7 @@ def echo(args: list) -> None:
     '''
     Echo all in @param args
     '''
+    args = args[1:]
     joined_args = " ".join(args)
     quote_count = global_functions.char_count(joined_args, '"')
     print(joined_args.replace('"', "", quote_count - quote_count % 2))

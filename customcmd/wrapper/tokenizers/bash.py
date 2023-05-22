@@ -1,6 +1,7 @@
 from customcmd.tools import global_functions
 import os
 import string 
+import copy
 
 VARIABLE_PREFIX = "$"
 CMD_DELIMITER = " "
@@ -12,13 +13,10 @@ def ps1_parse(ps1: str, functions: dict, variables: dict = dict()) -> str:
 
 def cmd_parse(args: str, variables: dict):
     mapped = []
-    in_var = False
     in_str_double = False
     in_str_once = False
     _tstro = ""
     _tstrd = ""
-    _tvar = ""
-    _available_vars = global_functions.get_dict_keys(variables)
     punctuation = []
     for x in range(len(string.punctuation)):
         if not string.punctuation[x] in [VARIABLE_PREFIX, CMD_DELIMITER, STRING_1, STRING_2]:
@@ -51,9 +49,29 @@ def cmd_parse(args: str, variables: dict):
             _tstro = global_functions.clever_add_str(_tstrd, args[x])
         else:
             mapped[-1] = global_functions.clever_add_str(mapped[-1], args[x])
-            
-    return mapped
     # STEP 2: PARSE VARS
+    _tvar = ""
+    _other = ""
+    invar = False
+    _available_vars = global_functions.get_dict_keys(variables)
+    # return mapped
     for x in range(len(mapped)):
-        for y in range(len(mapped[x])):
-            pass
+        _temp = copy.copy(mapped[x])
+        for y in range(len(_temp)):
+            if _temp[y] == VARIABLE_PREFIX:
+                if len(_tvar) > 0 and _tvar in _available_vars:
+                    _other = global_functions.clever_add_str(_other, variables[_tvar])
+                invar = True
+                _tvar = ""
+            elif _temp[y] in string.punctuation:
+                invar = False
+                if _tvar in _available_vars:
+                    _other = global_functions.clever_add_str(_other, variables[_tvar])
+            else:
+                if invar:
+                    _tvar = global_functions.clever_add_str(_tvar, _temp[y])
+                else:
+                    _other = global_functions.clever_add_str(_other, _temp[y])
+        mapped[x] = _other
+    
+    return mapped

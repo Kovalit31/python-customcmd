@@ -43,14 +43,14 @@ class Wrap():
             self.unload_function(b[a[x]])
         self.modules.pop(modulename, None)
     
-    def load_function(self, function: types.FunctionType, callname: str, endcode=config.SYS_EXEC_CONTINUE, unpack=False, retcode=False, get=[]) -> None:
+    def load_function(self, function: types.FunctionType, callname: str, endcode=config.SYS_EXEC_CONTINUE, unpack=False, retcode=False) -> None:
         if type(function) != types.FunctionType:
             return
         if callname in global_functions.get_dict_keys(self.commands):
             return
-        self.commands[callname] = [function, endcode, unpack, retcode, get]
+        self.commands[callname] = [function, endcode, unpack, retcode]
         
-    def edit_function(self, callname: str, callname_new = None, after=None, unpack=None, retcode=None, get=None) -> None:
+    def edit_function(self, callname: str, callname_new = None, after=None, unpack=None, retcode=None) -> None:
         if not callname in global_functions.get_dict_keys(self.commands):
             return
         _func = self.commands[callname][0]
@@ -58,9 +58,8 @@ class Wrap():
         _after = after if after != None else self.commands[callname][1]
         _unpack = unpack if unpack != None else self.commands[callname][2]
         _retcode = retcode if retcode != None else self.commands[callname][3]
-        _get = get if get != None else self.commands[callname][4]
         self.unload_function(callname)
-        self.load_function(_func, _callname, endcode=_after, unpack=_unpack, retcode=_retcode, get=_get)
+        self.load_function(_func, _callname, endcode=_after, unpack=_unpack, retcode=_retcode)
     
     def unload_function(self, callname: str) -> None:
         if not callname in global_functions.get_dict_keys(self.commands):
@@ -80,6 +79,9 @@ class Wrap():
         if self._command.strip() == "":
             return config.SYS_EXEC_CONTINUE
         _cmd_data = self.tokenizer.cmd_parse(self._command, self.sh_variables)
+        if _cmd_data[0] == "dump" and config.DEBUG:
+            print(self.commands, self.modules, self.sh_variables)
+            return config.SYS_EXEC_CONTINUE
         if not _cmd_data[0] in global_functions.get_dict_keys(self.commands):
             return config.SYS_EXEC_CMD_NFOUND
         return wrap.exec(self.commands[_cmd_data[0]][0], self.commands[_cmd_data[0]][1], fnreturns_code=self.commands[_cmd_data[0]][3], _cmd_args=_cmd_data, fnunpack=self.commands[_cmd_data[0]][2])
@@ -122,14 +124,14 @@ class Wrap():
                         else:
                             self.sh_variables[other[0]] = " "
                     else:
-                        global_functions.info(f"{locale.get_by_token('error.export.variable.isnull')}", level='e')
+                        global_functions.info(f"{locale.get_by_token('exec.sys.export.error.assert.variable.isnull')}", level='e')
                 else:
-                    global_functions.info(f"{locale.get_by_token('error.export.variable.littleinfo')}", level='e')
+                    global_functions.info(f"{locale.get_by_token('exec.sys.export.error.noinfo')}", level='e')
             elif code == config.SYS_EXEC_CMD_NFOUND:
-                global_functions.info(f"{locale.get_by_token('error.command.unexpected')} {self._command.split()[0]}")
+                global_functions.info(f"{locale.get_by_token('exec.sys.cmd.error.unexpected')} {self._command.split()[0]}")
             elif code == config.SYS_EXEC_CONTINUE:
                 if len(other) > 0:
-                    global_functions.info(f"{locale.get_by_token('exec.sys.cmd')}")
+                    global_functions.info(f"{locale.get_by_token('exec.sys.cmd.error')}")
             elif code == config.SYS_EXEC_EXECFILE:
                 commands = other[0]
                 in_command = len(commands) != 0
@@ -151,7 +153,7 @@ class Wrap():
             elif code == config.SYS_FUNCTION_SETUP:
                 pass
             else:
-                global_functions.info(f"{locale.get_by_token('error.syscode.unregistered')} {code}", level='w')
+                global_functions.info(f"{locale.get_by_token('exec.sys.code.error.unexpected')} {code}", level='w')
                 
             if in_command:
                 iterator += 1

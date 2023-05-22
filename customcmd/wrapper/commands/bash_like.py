@@ -8,6 +8,7 @@ def export(args: list) -> tuple[str, str]:
     @return value - Value of
     Works as bash's export
     '''
+    args = args[1:]
     args_remapped = []
     found = False
     for x in range(len(args)):
@@ -43,6 +44,7 @@ def read(args: list) -> tuple[str, str]:
     '''
     Reads standart input to get value of variable
     '''
+    args = args[1:]
     if len(args) < 1:
         global_functions.info(f"{locale.get_by_token('exec.cmd.read.error.fewargs')}")
         return None, None
@@ -53,8 +55,9 @@ def exec(args: list) -> list:
     '''
     Gets command list from file
     '''
+    args = args[1:]
     if len(args) < 1:
-        global_functions.info(f"{locale.get_by_token('tokens.FEW_ARGS_FOR_LOAD')}", level='e')
+        global_functions.info(f"{locale.get_by_token('exec.cmd.load.error.fewargs')}", level='e')
         return []
     path = pathutil.is_file_throw(args[0])
     if path == None:
