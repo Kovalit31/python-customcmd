@@ -1,5 +1,4 @@
 from customcmd.tools import global_functions
-import os
 import string 
 import copy
 
@@ -17,6 +16,7 @@ def cmd_parse(args: str, variables: dict):
     in_str_once = False
     _tstro = ""
     _tstrd = ""
+    latest = -1
     punctuation = []
     for x in range(len(string.punctuation)):
         if not string.punctuation[x] in [VARIABLE_PREFIX, CMD_DELIMITER, STRING_1, STRING_2]:
@@ -28,27 +28,37 @@ def cmd_parse(args: str, variables: dict):
         if args[x] == STRING_1:
             if not in_str_once:
                 in_str_double = not in_str_double
+                if in_str_double:
+                    latest = x
                 if not in_str_double and len(_tstrd) > 0:
                     mapped[-1] = global_functions.clever_add_str(mapped[-1], _tstrd)
                     _tstrd = ""
-                    continue
+            else:
+                _tstro = global_functions.clever_add_str(_tstro, args[x])
         elif args[x] == STRING_2:
             if not in_str_double:
                 in_str_once = not in_str_once
+                if in_str_once:
+                    latest = x
                 if not in_str_once and len(_tstro) > 0:
                     mapped[-1] = global_functions.clever_add_str(mapped[-1], _tstro)
                     _tstro = ""
-                    continue
+            else:
+                _tstrd = global_functions.clever_add_str(_tstrd, args[x])
         elif args[x] == CMD_DELIMITER:
             if not (in_str_double or in_str_once):
                 mapped.append("")
-                continue        
-        if in_str_double:
-            _tstrd = global_functions.clever_add_str(_tstrd, args[x])
-        elif in_str_once:
-            _tstro = global_functions.clever_add_str(_tstrd, args[x])
         else:
-            mapped[-1] = global_functions.clever_add_str(mapped[-1], args[x])
+            if in_str_double:
+                _tstrd = global_functions.clever_add_str(_tstrd, args[x])
+            elif in_str_once:
+                _tstro = global_functions.clever_add_str(_tstro, args[x])
+            else:
+                mapped[-1] = global_functions.clever_add_str(mapped[-1], args[x])
+    if in_str_once ^ in_str_double:
+        mapped[-1] = global_functions.clever_add_str(mapped[-1], args[latest])
+    elif in_str_once or in_str_double:
+        global_functions.info("It's confusing! Double and once quote strings are in use! Are you freak?", level='f')
     # STEP 2: PARSE VARS
     _tvar = ""
     _other = ""
@@ -63,15 +73,18 @@ def cmd_parse(args: str, variables: dict):
                     _other = global_functions.clever_add_str(_other, variables[_tvar])
                 invar = True
                 _tvar = ""
-            elif _temp[y] in string.punctuation:
-                invar = False
-                if _tvar in _available_vars:
-                    _other = global_functions.clever_add_str(_other, variables[_tvar])
+            elif _temp[y] in punctuation:
+                if invar:
+                    invar = False
+                    if _tvar in _available_vars:
+                        _other = global_functions.clever_add_str(_other, variables[_tvar])
+                _other = global_functions.clever_add_str(_other, _temp[y])
             else:
                 if invar:
                     _tvar = global_functions.clever_add_str(_tvar, _temp[y])
                 else:
                     _other = global_functions.clever_add_str(_other, _temp[y])
         mapped[x] = _other
-    
+        _other = ""
+
     return mapped

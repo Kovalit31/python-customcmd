@@ -1,6 +1,7 @@
 import os
 
 from ..tools import global_functions, pathutil
+from ..core import config
 
 PATH = os.path.join(os.path.dirname(__file__), "lang")
 
@@ -10,8 +11,7 @@ def get_by_token(token: str, lang=None) -> str:
     '''
     path = os.path.join(PATH, "c.po") if lang == None else os.path.join(PATH, f"{lang}.po")
     if not os.path.exists(path):
-        global_functions.info(f"Developer! No such locale: {'default' if lang == None else lang}!", level="e")
-        return f"{{{token}}}"
+        set_lang(config.DEFAULT_LANG)
     try:
         file = open(path, "r", encoding="utf-8")
         data = file.readlines()
@@ -79,10 +79,12 @@ def __parse_po(data: list[str]) -> list[dict]:
                 if not ".".join(global_functions.get_list_from_to_including(_temp, y)) in global_functions.get_dict_keys(_data[y]):
                     if y != 0:
                         _data[y-1][".".join(global_functions.get_list_from_to_including(_temp, y-1))].append(".".join(global_functions.get_list_from_to_including(_temp, y)))
-                    _data[y][".".join(_temp[:y]+[_temp[y]])] = [None]
+                    _data[y][".".join(global_functions.get_list_from_to_including(_temp, y))] = [None]
                     if y == len(_temp) - 1:
                         _data[y][".".join(global_functions.get_list_from_to_including(_temp, y))][0] = data[x+1] if len(data) > x else ""
-                    continue
+                else:
+                    if len(_temp)-1 == y:
+                        _data[y][".".join(global_functions.get_list_from_to_including(_temp, y))][0] = data[x+1] if len(data) > x else ""
     return _data
 
 def __get_candidate(data: list[dict], token: str) -> str:
@@ -90,7 +92,7 @@ def __get_candidate(data: list[dict], token: str) -> str:
     _next_token = str()
     auto = None
     for x in range(len(_temp)):
-        if len(data)-1 == x:
+        if len(data) == x:
             return
         if not ".".join(global_functions.get_list_from_to_including(_temp, x)) in global_functions.get_dict_keys(data[x]):
             if x == 0:
@@ -104,4 +106,4 @@ def __get_candidate(data: list[dict], token: str) -> str:
     else:
         if data[x][_next_token][0] == None:
             return
-        return data[x][_next_token][0], auto
+        return data[x][_next_token][0].strip("\n"), auto

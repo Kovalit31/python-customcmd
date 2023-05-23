@@ -6,7 +6,8 @@ def ls(args: list) -> None:
     Lists current directory in local system
     '''
     args = args[1:]
-    if len(args) > 1:
+    print(args)
+    if len(args) > 0:
         dir = pathutil.get_full_path(args[0])
     else:
         dir = "."

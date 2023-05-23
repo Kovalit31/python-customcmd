@@ -40,3 +40,54 @@ error.locale.nolang
 Нет такого языка:
 locale.reload.trigger
 Язык установлен!
+
+~exec.cmd.pause.main
+Нажмите enter, чтобы продолжить...
+~io.path.file.action.read.error
+Невозможно открыть файл: '{file}': {error}!
+~io.path.file.action.write.error
+Can't write data to file '{file}': {error}!
+~exec.sys.code.error.unexpected
+Неожиданный системный код: {code}!
+~io.path.file.action.open@debug
+Попытка открыть файл '{file}'...
+~io.path.file.action.open
+@user.ue.wait
+~io.path.error.notexists
+Нет такого файла или директории: '{path}'!
+~exec.sys.cmd.error.unexpected
+Неожиданная команда: '{command}'!
+~io.path.error.notdir
+Path not a dir: '{path}'!
+~io.path.error.notfile
+Path not a file: '{path}'!
+~exec.sys.export.error
+Can't set variable: {error}!
+~exec.sys.exit.main@debug
+Exit expected!
+~exec.sys.exit.main
+Exit
+~exec.cmd.*.error.fewargs
+Few arguments for command '{!auto}'!
+~exec.sys.export.error.assert.variable.isnull
+Can't set variable, if it's null!
+~exec.sys.export.error.noinfo
+Not enought or no info to set variable!
+~exec.cmd.loadcmd.error.fewargs
+Few arguments to load command file!
+~io.path.file.object.action.replace
+This file will be replaced: '{file}'.
+~user.ue.action.continue
+Continue [y]es/[n]o?
+~user.ue.action.answer.yes
+Yes
+~user.ue.action.answer.no
+No
+~data.locale.error.po.nolang
+No such language: '{lang}'!
+~data.locale.trigger.reload
+Locale reloaded!
+~user.ue.wait
+Wait, please...
+~exec.sys.cmd.error
+Command exited with error: {error}!

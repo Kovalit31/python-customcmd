@@ -1,14 +1,11 @@
-import math
-import copy
-
+import os
+import sys
 from ..core import config
 
 # =====================
 #  Internal algorithms
 # =====================
 
-def str_to_list(string: str) -> list:
-    return [string[x] for x in range(len(string))]
 
 # def binary_search(where: list, what) -> tuple[int, int]:
 #     where.sort()
@@ -27,7 +24,7 @@ def str_to_list(string: str) -> list:
 #         UE
 # =====================
 
-def info(string: str, level="i") -> None:
+def out(string: str, level="i") -> None:
     '''
     Wraps output
     @param string (str): Output string
@@ -42,6 +39,9 @@ def info(string: str, level="i") -> None:
     if _level == 'f':
         raise Exception(string)
 
+def get_resolution() -> tuple[int, int]:
+    return os.get_terminal_size().columns(), os.get_terminal_size().lines()
+
 # ==================
 #  String functions
 # ==================
@@ -54,6 +54,9 @@ def clever_add_str(_str: str, _add: str) -> str:
         return _add
     else:
         return _str + _add
+
+def str_to_list(string: str) -> list:
+    return [string[x] for x in range(len(string))]
 
 def char_count(string: str, char: str) -> int:
     list_of = str_to_list(string)
@@ -79,17 +82,6 @@ def get_dict_keys(dictionary: dict) -> list:
     for x in dictionary.keys():
         output.append(x)
     return output
-
-def merge_dicts(dict1: dict, dict2: dict, _recursively = False) -> dict:
-    dict1_keys = set(get_dict_keys(dict1))
-    dict2_keys = set(get_dict_keys(dict2))
-    # By default, it will be using dict1 as base, dict2 to additional elements
-    dict_out = dict1
-    dict_out_keys = dict2_keys - dict1_keys
-    updates = dict1_keys & dict2_keys
-    print(updates)
-    if len(dict_out_keys) == 0:
-        return dict_out
 
 def get_list_from_to_including(arr: list, end: int, start: int = 0) -> list:
     return arr[start:end]+[arr[end]]

@@ -80,11 +80,11 @@ class Wrap():
             return config.SYS_EXEC_CONTINUE
         _cmd_data = self.tokenizer.cmd_parse(self._command, self.sh_variables)
         if _cmd_data[0] == "dump" and config.DEBUG:
-            print(self.commands, self.modules, self.sh_variables)
+            print(self.commands, self.modules, self.sh_variables, _cmd_data)
             return config.SYS_EXEC_CONTINUE
         if not _cmd_data[0] in global_functions.get_dict_keys(self.commands):
-            return config.SYS_EXEC_CMD_NFOUND
-        return wrap.exec(self.commands[_cmd_data[0]][0], self.commands[_cmd_data[0]][1], fnreturns_code=self.commands[_cmd_data[0]][3], _cmd_args=_cmd_data, fnunpack=self.commands[_cmd_data[0]][2])
+            return config.SYS_EXEC_CMD_NFOUND, _cmd_data[0] 
+        return wrap.exec(self.commands[_cmd_data[0]][0], self.commands[_cmd_data[0]][1], fnreturns_code=self.commands[_cmd_data[0]][3], _cmd_args=_cmd_data, fnunpack=self.commands[_cmd_data[0]][2]) # TODO Move part to tokenizer, do tokenizer.exec() as main executor, create custom variables from bash (bash is my favourite :))
         
     def run(self, args: list):
         commands = functions.read_from_file(args[0]) if len(args) > 0 else []
@@ -128,10 +128,10 @@ class Wrap():
                 else:
                     global_functions.info(f"{locale.get_by_token('exec.sys.export.error.noinfo')}", level='e')
             elif code == config.SYS_EXEC_CMD_NFOUND:
-                global_functions.info(f"{locale.get_by_token('exec.sys.cmd.error.unexpected')} {self._command.split()[0]}")
+                global_functions.info(f"{locale.get_by_token('exec.sys.cmd.error.unexpected').format(command=other[0])}")
             elif code == config.SYS_EXEC_CONTINUE:
-                if len(other) > 0:
-                    global_functions.info(f"{locale.get_by_token('exec.sys.cmd.error')}")
+                if len(other) > 0 and config.DEBUG:
+                    global_functions.info(f"{locale.get_by_token('exec.sys.cmd.error').format(error=other[0])}", level='e')
             elif code == config.SYS_EXEC_EXECFILE:
                 commands = other[0]
                 in_command = len(commands) != 0
@@ -153,7 +153,7 @@ class Wrap():
             elif code == config.SYS_FUNCTION_SETUP:
                 pass
             else:
-                global_functions.info(f"{locale.get_by_token('exec.sys.code.error.unexpected')} {code}", level='w')
+                global_functions.info(f"{locale.get_by_token('exec.sys.code.error.unexpected').format(code=code)}", level='w')
                 
             if in_command:
                 iterator += 1

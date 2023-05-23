@@ -1,23 +1,23 @@
 ~exec.cmd.pause.main
 Press enter to continue...
 ~io.path.file.action.read.error
-Can't open file {file}: {error}!
+Can't open file '{file}': {error}!
 ~io.path.file.action.write.error
-Can't write data to file {file}: {error}!
+Can't write data to file '{file}': {error}!
 ~exec.sys.code.error.unexpected
 Unexpected syscode: {code}!
 ~io.path.file.action.open@debug
-Trying to open file {file}...
+Trying to open file '{file}'...
 ~io.path.file.action.open
 @user.ue.wait
 ~io.path.error.notexists
-No such file or directory: {path}!
+No such file or directory: '{path}'!
 ~exec.sys.cmd.error.unexpected
-Unexpected command: {command}!
+Unexpected command: '{command}'!
 ~io.path.error.notdir
-Path not a dir: {path}!
+Path not a dir: '{path}'!
 ~io.path.error.notfile
-Path not a file: {path}!
+Path not a file: '{path}'!
 ~exec.sys.export.error
 Can't set variable: {error}!
 ~exec.sys.exit.main@debug
@@ -25,7 +25,7 @@ Exit expected!
 ~exec.sys.exit.main
 Exit
 ~exec.cmd.*.error.fewargs
-Few arguments for command {!auto}!
+Few arguments for command '{!auto}'!
 ~exec.sys.export.error.assert.variable.isnull
 Can't set variable, if it's null!
 ~exec.sys.export.error.noinfo
@@ -33,7 +33,7 @@ Not enought or no info to set variable!
 ~exec.cmd.loadcmd.error.fewargs
 Few arguments to load command file!
 ~io.path.file.object.action.replace
-This file will be replaced:
+This file will be replaced: '{file}'.
 ~user.ue.action.continue
 Continue [y]es/[n]o?
 ~user.ue.action.answer.yes
@@ -41,7 +41,7 @@ Yes
 ~user.ue.action.answer.no
 No
 ~data.locale.error.po.nolang
-No such language: {lang}!
+No such language: '{lang}'!
 ~data.locale.trigger.reload
 Locale reloaded!
 ~user.ue.wait

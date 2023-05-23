@@ -8,37 +8,12 @@ def export(args: list) -> tuple[str, str]:
     @return value - Value of
     Works as bash's export
     '''
-    args = args[1:]
-    args_remapped = []
-    found = False
-    for x in range(len(args)):
-        if "=" in args[x] and not found:
-            parts = args[x].split("=", 1)
-            var, val = parts[0], parts[1]
-            args_remapped.append(var)
-            args_remapped.append("=")
-            args_remapped.append(val)
-            found = not found
-        else:
-            args_remapped.append(args[x])
-    _variable = []
-    _value = []
-    is_got = False
-    for x in range(len(args_remapped)):
-        if args_remapped[x] == "" and x != len(args_remapped) - 1:
-            continue
-        if not is_got:
-            if args_remapped[x] == "=":
-                is_got = not is_got
-                continue
-            _variable.append(args_remapped[x])
-        else:
-            _value.append(args_remapped[x])       
-    var = "_".join(_variable)
-    val = " ".join(_value)
-    quote_count = global_functions.char_count(val, '"')
-    val = val.replace('"', '', quote_count - quote_count % 2)
-    return var, val
+    _var = None
+    _val = None
+    _parsed = " ".join(args[1:])
+    _var, _val = _parsed.split("=", maxsplit=1)
+    print(_var, _val)
+    return _var, _val
     
 def read(args: list) -> tuple[str, str]:
     '''
