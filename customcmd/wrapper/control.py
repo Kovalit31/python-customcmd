@@ -96,7 +96,7 @@ class Wrap():
             fileslang = _fileslang if _fileslang == None else _fileslang.strip()
             if not curlang == fileslang:
                 if locale.set_lang(curlang):
-                    global_functions.info(f"{locale.get_by_token('data.locale.trigger.reload')}") 
+                    global_functions.out(f"{locale.get_by_token('data.locale.trigger.reload')}") 
             else:
                 pass
             try:
@@ -124,14 +124,14 @@ class Wrap():
                         else:
                             self.sh_variables[other[0]] = " "
                     else:
-                        global_functions.info(f"{locale.get_by_token('exec.sys.export.error.assert.variable.isnull')}", level='e')
+                        global_functions.out(f"{locale.get_by_token('exec.sys.export.error.assert.variable.isnull')}", level='e')
                 else:
-                    global_functions.info(f"{locale.get_by_token('exec.sys.export.error.noinfo')}", level='e')
+                    global_functions.out(f"{locale.get_by_token('exec.sys.export.error.noinfo')}", level='e')
             elif code == config.SYS_EXEC_CMD_NFOUND:
-                global_functions.info(f"{locale.get_by_token('exec.sys.cmd.error.unexpected').format(command=other[0])}")
+                global_functions.out(f"{locale.get_by_token('exec.sys.cmd.error.unexpected').format(command=other[0])}")
             elif code == config.SYS_EXEC_CONTINUE:
                 if len(other) > 0 and config.DEBUG:
-                    global_functions.info(f"{locale.get_by_token('exec.sys.cmd.error').format(error=other[0])}", level='e')
+                    global_functions.out(f"{locale.get_by_token('exec.sys.cmd.error').format(error=other[0])}", level='e')
             elif code == config.SYS_EXEC_EXECFILE:
                 commands = other[0]
                 in_command = len(commands) != 0
@@ -153,7 +153,7 @@ class Wrap():
             elif code == config.SYS_FUNCTION_SETUP:
                 pass
             else:
-                global_functions.info(f"{locale.get_by_token('exec.sys.code.error.unexpected').format(code=code)}", level='w')
+                global_functions.out(f"{locale.get_by_token('exec.sys.code.error.unexpected').format(code=code)}", level='w')
                 
             if in_command:
                 iterator += 1

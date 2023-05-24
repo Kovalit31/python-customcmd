@@ -42,8 +42,10 @@ Yes
 No
 ~data.locale.error.po.nolang
 No such language: '{lang}'!
-~data.locale.trigger.reload
+~data.locale.trigger.reload@debug
 Locale reloaded!
+~data.locale.trigger.reload
+@user.ue.wait
 ~user.ue.wait
 Wait, please...
 ~exec.sys.cmd.error

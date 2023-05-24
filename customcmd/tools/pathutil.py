@@ -14,7 +14,7 @@ def get_full_path(_path: str, return_else=False):
     if os.path.exists(path) or return_else:
         return os.path.realpath(path)
     else:
-        global_functions.info(f"{locale.get_by_token('io.path.error.notexists').format(path=_path)}")
+        global_functions.out(f"{locale.get_by_token('io.path.error.notexists').format(path=_path)}")
         return None
     
 # ===================
@@ -31,7 +31,7 @@ def is_file_throw(_path: str):
     if os.path.isfile(path):
         return path
     else:
-        global_functions.info(f"{locale.get_by_token('io.path.error.notfile').format(path=_path)}", level='e')
+        global_functions.out(f"{locale.get_by_token('io.path.error.notfile').format(path=_path)}", level='e')
         return None
     
 def is_dir_throw(_path: str):
@@ -44,5 +44,5 @@ def is_dir_throw(_path: str):
     if os.path.isdir(path):
         return path
     else:
-        global_functions.info(f"{locale.get_by_token('io.path.error.notdir').format(path=_path)}", level='e')
+        global_functions.out(f"{locale.get_by_token('io.path.error.notdir').format(path=_path)}", level='e')
         return None

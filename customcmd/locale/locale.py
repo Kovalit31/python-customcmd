@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from ..tools import global_functions, pathutil
 from ..core import config
@@ -10,14 +11,14 @@ def get_by_token(token: str, lang=None) -> str:
     Gets language value with token
     '''
     path = os.path.join(PATH, "c.po") if lang == None else os.path.join(PATH, f"{lang}.po")
-    if not os.path.exists(path):
+    if pathutil.is_file_throw(path) == None:
         set_lang(config.DEFAULT_LANG)
     try:
         file = open(path, "r", encoding="utf-8")
         data = file.readlines()
         file.close()
     except Exception as e:
-        global_functions.info(f"Can't get locale! {e}", level='e')
+        global_functions.out(f"Can't get locale! {e}", level='e')
         return f"{{{token}}}"
     lang = data[0].strip().lower() if lang == None else lang
     ret = __get_candidate(__parse_po(data[1:]), token)
@@ -33,23 +34,28 @@ def set_lang(lang: str) -> bool:
     Set @param lang as default language
     '''
     data = []
+    if os.path.exists(os.path.join(PATH, "c.po")) and pathutil.is_file_throw(os.path.join(PATH, "c.po")) == None:
+        shutil.rmtree(os.path.join(PATH, "c.po"))
     if pathutil.is_file_throw(os.path.join(PATH, f"{lang}.po")) != None:
         try:
             file = open(pathutil.get_full_path(os.path.join(PATH, f"{lang}.po")), "r", encoding="utf-8")
             data = file.readlines()
             file.close()
         except Exception as e:
-            global_functions.info(f"Developer! Can't open file with lang {lang}, because this error occurs: {e}", level="d")
+            global_functions.out(f"Developer! Can't open file with lang {lang}, because this error occurs: {e}", level="d")
             return False
         try:
             file = open(os.path.join(PATH, "c.po"), "w", encoding="utf-8") 
             file.write(f"{lang}\n" + "".join(data))
             file.close()
         except Exception as e:
-            global_functions.info(f"Developer! Can't create default locale file, because this error occurs: {e}", level="d")
+            global_functions.out(f"Developer! Can't create default locale file, because this error occurs: {e}", level="d")
             return False
     else:
-        global_functions.info(f"{get_by_token('data.locale.error.po.nolang').format(lang=lang)}", level="e")
+        content = os.listdir(PATH)
+        if not config.DEFAULT_LANG+".po" in content:
+            global_functions.out(f"NO LANGS FOUND!", level='f')
+        global_functions.out(f"{get_by_token('data.locale.error.po.nolang').format(lang=lang)}", level="e")
         return False
     return True
 
@@ -61,11 +67,11 @@ def get_current() -> str:
             curlang = file.readlines()[0]
             file.close()
         except Exception as e:
-            global_functions.info(f"Developer! Can\'t get current locale: {e}", level='d')
+            global_functions.out(f"Developer! Can\'t get current locale: {e}", level='d')
             return None
         return curlang
     else:
-        global_functions.info("Developer! c.po is not file or doesn't exists!", level='d')
+        global_functions.out("Developer! c.po is not file or doesn't exists!", level='d')
         return None
 
 def __parse_po(data: list[str]) -> list[dict]:

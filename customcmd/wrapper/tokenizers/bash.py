@@ -58,7 +58,7 @@ def cmd_parse(args: str, variables: dict):
     if in_str_once ^ in_str_double:
         mapped[-1] = global_functions.clever_add_str(mapped[-1], args[latest])
     elif in_str_once or in_str_double:
-        global_functions.info("It's confusing! Double and once quote strings are in use! Are you freak?", level='f')
+        global_functions.out("It's confusing! Double and once quote strings are in use! Are you freak?", level='f')
     # STEP 2: PARSE VARS
     _tvar = ""
     _other = ""

@@ -21,7 +21,7 @@ def read(args: list) -> tuple[str, str]:
     '''
     args = args[1:]
     if len(args) < 1:
-        global_functions.info(f"{locale.get_by_token('exec.cmd.read.error.fewargs')}")
+        global_functions.out(f"{locale.get_by_token('exec.cmd.read.error.fewargs')}")
         return None, None
     inputted = input(args[1] if len(args) > 1 else "")
     return args[0], inputted
@@ -32,18 +32,18 @@ def exec(args: list) -> list:
     '''
     args = args[1:]
     if len(args) < 1:
-        global_functions.info(f"{locale.get_by_token('exec.cmd.load.error.fewargs')}", level='e')
+        global_functions.out(f"{locale.get_by_token('exec.cmd.load.error.fewargs')}", level='e')
         return []
     path = pathutil.is_file_throw(args[0])
     if path == None:
         return []
-    global_functions.info(f"{locale.get_by_token('tokens.FILE_OPEN_TRY')}")
-    global_functions.info(f"{locale.get_by_token('tokens.FILE_NAME_DISPLAY')} {args[0]}", level='d')
+    global_functions.out(f"{locale.get_by_token('tokens.FILE_OPEN_TRY')}")
+    global_functions.out(f"{locale.get_by_token('tokens.FILE_NAME_DISPLAY')} {args[0]}", level='d')
     commands = []
     try:
         file = open(path, "r")
         commands = file.readlines()
         file.close()
     except Exception as e:
-        global_functions.info(f"{locale.get_by_token('tokens.ERROR_FILE_READ')} {e}", level='e') # TODO Replace all tokens.
+        global_functions.out(f"{locale.get_by_token('tokens.ERROR_FILE_READ')} {e}", level='e') # TODO Replace all tokens.
     return commands

@@ -31,7 +31,7 @@ def write_to_file(path: str, text: str) -> None:
         file.write(text)
         file.close()
     except Exception as e:
-        global_functions.info(f"{locale.get_by_token('io.path.file.action.write.error').format(file=path, error=e)}", level='e')
+        global_functions.out(f"{locale.get_by_token('io.path.file.action.write.error').format(file=path, error=e)}", level='e')
 
 def read_from_file(path: str) -> None:
     realpath = pathutil.is_file_throw(path)
@@ -51,6 +51,6 @@ def read_from_file(path: str) -> None:
 
 def return_if_few(args: list, minlen: int, msg: str = "") -> bool:
     if len(args) < minlen:
-        global_functions.info(f"{locale.get_by_token(msg)}", level="e") if len(msg) > 0 else global_functions.do_nothing()
+        global_functions.out(f"{locale.get_by_token(msg)}", level="e") if len(msg) > 0 else global_functions.do_nothing()
         return True
     return False

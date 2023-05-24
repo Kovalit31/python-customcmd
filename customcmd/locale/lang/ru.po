@@ -58,36 +58,38 @@ Can't write data to file '{file}': {error}!
 ~exec.sys.cmd.error.unexpected
 Неожиданная команда: '{command}'!
 ~io.path.error.notdir
-Path not a dir: '{path}'!
+Путь не является директорией: '{path}'!
 ~io.path.error.notfile
-Path not a file: '{path}'!
+Путь не является файлом: '{path}'!
 ~exec.sys.export.error
-Can't set variable: {error}!
+Невозможно установить значение переменной: {error}!
 ~exec.sys.exit.main@debug
-Exit expected!
+Выполнен выход!
 ~exec.sys.exit.main
-Exit
+Выход
 ~exec.cmd.*.error.fewargs
-Few arguments for command '{!auto}'!
+Недостаточно аргументов для команды '{!auto}'!
 ~exec.sys.export.error.assert.variable.isnull
-Can't set variable, if it's null!
+Невозможно установить значение пустой переменной!
 ~exec.sys.export.error.noinfo
-Not enought or no info to set variable!
+Недостаточно или нет информации для установки переменной!
 ~exec.cmd.loadcmd.error.fewargs
-Few arguments to load command file!
+Недостаточно аргументов для загрузки файла команд!
 ~io.path.file.object.action.replace
-This file will be replaced: '{file}'.
+Этот файл будет заменён: '{file}'.
 ~user.ue.action.continue
-Continue [y]es/[n]o?
+Продолжить [д]а/[н]ет?
 ~user.ue.action.answer.yes
-Yes
+Да
 ~user.ue.action.answer.no
-No
+Нет
 ~data.locale.error.po.nolang
-No such language: '{lang}'!
+Нет такого языка: '{lang}'!
+~data.locale.trigger.reload@debug
+Язык изменён!
 ~data.locale.trigger.reload
-Locale reloaded!
+@user.ue.wait
 ~user.ue.wait
-Wait, please...
+Пожалуйста, подождите...
 ~exec.sys.cmd.error
-Command exited with error: {error}!
+Команда выполнилась с ошибкой: {error}!
