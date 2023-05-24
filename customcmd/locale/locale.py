@@ -11,7 +11,7 @@ def get_by_token(token: str, lang=None) -> str:
     Gets language value with token
     '''
     path = os.path.join(PATH, "c.po") if lang == None else os.path.join(PATH, f"{lang}.po")
-    if pathutil.is_file_throw(path) == None:
+    if not os.path.exists(os.path.join(PATH, "c.po")) or not os.path.isfile(os.path.join(PATH, "c.po")):
         set_lang(config.DEFAULT_LANG)
     try:
         file = open(path, "r", encoding="utf-8")
@@ -34,9 +34,9 @@ def set_lang(lang: str) -> bool:
     Set @param lang as default language
     '''
     data = []
-    if os.path.exists(os.path.join(PATH, "c.po")) and pathutil.is_file_throw(os.path.join(PATH, "c.po")) == None:
+    if os.path.exists(os.path.join(PATH, "c.po")) and not os.path.isfile(os.path.join(PATH, "c.po")):
         shutil.rmtree(os.path.join(PATH, "c.po"))
-    if pathutil.is_file_throw(os.path.join(PATH, f"{lang}.po")) != None:
+    if os.path.exists(os.path.join(PATH, f"{lang}.po")):
         try:
             file = open(pathutil.get_full_path(os.path.join(PATH, f"{lang}.po")), "r", encoding="utf-8")
             data = file.readlines()
