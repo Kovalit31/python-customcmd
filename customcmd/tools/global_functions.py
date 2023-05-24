@@ -65,7 +65,7 @@ def char_count(string: str, char: str) -> int:
         start = list_of.index(char)
         end = list_of[::-1].index(char)
         return start, len(list_of)-1-end
-    except:
+    except Exception as e:
         return -1, -1
 
 # ==================

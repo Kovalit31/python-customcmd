@@ -4,6 +4,7 @@ import shutil
 from ..tools import global_functions, pathutil
 from ..core import config
 
+LOCALE_RECURSION = 100
 PATH = os.path.join(os.path.dirname(__file__), "lang")
 
 def get_by_token(token: str, lang=None) -> str:
@@ -18,16 +19,22 @@ def get_by_token(token: str, lang=None) -> str:
         data = file.readlines()
         file.close()
     except Exception as e:
+        if config.EXTRA_DEBUG:
+            raise e
         global_functions.out(f"Can't get locale! {e}", level='e')
         return f"{{{token}}}"
     lang = data[0].strip().lower() if lang == None else lang
-    ret = __get_candidate(__parse_po(data[1:]), token)
-    if ret == None:
-        return f"{{{token}}}"
-    candidate, auto = ret
-    if auto != None:
-        candidate = candidate.replace("{!auto}", auto)
-    return candidate
+    for _ in range(LOCALE_RECURSION):
+        ret = __get_candidate(__parse_po(data[1:]), token)
+        if ret == None:
+            return f"{{{token}}}"
+        candidate, auto = ret
+        if auto != None:
+            candidate = candidate.replace("{!auto}", auto)
+        if not candidate.startswith("@"):
+            return candidate
+        else:
+            token = candidate[1:]
 
 def set_lang(lang: str) -> bool:
     '''
@@ -42,6 +49,8 @@ def set_lang(lang: str) -> bool:
             data = file.readlines()
             file.close()
         except Exception as e:
+            if config.EXTRA_DEBUG:
+                raise e
             global_functions.out(f"Developer! Can't open file with lang {lang}, because this error occurs: {e}", level="d")
             return False
         try:
@@ -49,6 +58,8 @@ def set_lang(lang: str) -> bool:
             file.write(f"{lang}\n" + "".join(data))
             file.close()
         except Exception as e:
+            if config.EXTRA_DEBUG:
+                raise e
             global_functions.out(f"Developer! Can't create default locale file, because this error occurs: {e}", level="d")
             return False
     else:
@@ -67,6 +78,8 @@ def get_current() -> str:
             curlang = file.readlines()[0]
             file.close()
         except Exception as e:
+            if config.EXTRA_DEBUG:
+                raise e
             global_functions.out(f"Developer! Can\'t get current locale: {e}", level='d')
             return None
         return curlang

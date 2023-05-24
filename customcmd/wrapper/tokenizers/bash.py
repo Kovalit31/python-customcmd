@@ -50,6 +50,13 @@ def cmd_parse(args: str, variables: dict):
         elif args[x] == CMD_DELIMITER:
             if not (in_str_double or in_str_once):
                 mapped.append("")
+            else:
+                if in_str_double:
+                    _tstrd = global_functions.clever_add_str(_tstrd, args[x])
+                elif in_str_once:
+                    _tstro = global_functions.clever_add_str(_tstro, args[x])
+                else:
+                    global_functions.out("It's crazy! We haven't got True in in_str_double and in_str_once, but 1st checkup wasn't sucessful! Are you genious?", level='f')
         else:
             if in_str_double:
                 _tstrd = global_functions.clever_add_str(_tstrd, args[x])
@@ -95,7 +102,6 @@ def cmd_parse(args: str, variables: dict):
                     _other = global_functions.clever_add_str(_other, _temp[y])
         mapped[x] = _other
         _other = ""
-
     return mapped
 
 def exec(runner: Wrap) -> int: # TODO Execute commands another way

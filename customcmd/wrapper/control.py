@@ -36,7 +36,9 @@ class Wrap():
     def unload_module(self, modulename: str) -> None:
         try:
             a = copy.deepcopy(self.modules[modulename])
-        except:
+        except Exception as e:
+            if config.EXTRA_DEBUG:
+                raise e
             return
         b = global_functions.get_dict_keys(self.commands)
         for x in range(len(a)):
@@ -101,7 +103,9 @@ class Wrap():
                 pass
             try:
                 self._command = input(self.tokenizer.ps1_parse(self.sh_variables["PS1"], self.commands, variables = self.sh_variables)) if not in_command else commands[iterator]
-            except KeyboardInterrupt or EOFError:
+            except KeyboardInterrupt or EOFError as e:
+                if config.EXTRA_DEBUG:
+                    raise e
                 print() # The fix :)
                 break
             _ret = self.exec()

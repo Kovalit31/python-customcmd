@@ -1,24 +1,38 @@
 import os
+import pathlib
+import copy
 from customcmd.tools import global_functions, pathutil
 
 def ls(args: list) -> None:
     '''
-    Lists current directory in local system
+    Lists current directory in local system (without arguments)
     '''
     args = args[1:]
-    print(args)
     if len(args) > 0:
-        dir = pathutil.get_full_path(args[0])
+        dir = os.fspath(pathutil.get_full_path(args[0]))
     else:
         dir = "."
     if dir == None:
         return
+    remapped = [[] for _ in range(5)]
+    _biggest1 = 0
+    _biggest2 = 0
     content = os.listdir(dir) if not os.path.isfile(dir) else [dir]
-    part = len(content) % 5
-    for x in range((len(content) - part) // 5):
-        print(" ".join(content[5*x:5*(x+1)]))
-    if part != 0:
-        print(" ".join(content[-part:]))
+    for x in range(len(content)):
+        start, end = global_functions.char_count(content[x], " ")
+        if end - start >= 0 and start + end != -2:
+            content[x] = "\"" + content[x] + "\""
+        if not x in range(5):
+            _biggest2 = len(content[x]) if len(content[x]) > _biggest2 else _biggest2
+            content[x] = " "*(_biggest1-len(remapped[x%5][-1].strip()))+content[x]
+        else:
+            _biggest1 = len(content[x]) if len(content[x]) > _biggest1 else _biggest1
+        if x % 5 == 4:
+            _biggest1 = copy.copy(_biggest2) + 1 if not x in range(5) else _biggest1 + 1
+            _biggest2 = 0
+        remapped[x%5].append(content[x])
+    for x in range(len(remapped)):
+        print(" ".join(remapped[x]))
     
 def cd(args: list) -> None:
     '''
@@ -26,12 +40,12 @@ def cd(args: list) -> None:
     '''
     args = args[1:]
     if len(args) > 0:
-        path = pathutil.is_dir_throw(args[-1])
+        path = pathutil.is_dir_throw(args[0])
         if path == None:
             return
     else:
-        path = os.path.defpath
-    os.chdir(os.path.abspath(path) if os.path.exists(path) else os.path.defpath)
+        path = os.fspath(pathlib.Path.home())
+    os.chdir(path if os.path.exists(path) else os.fspath(pathlib.Path(".").absolute()))
 
 def echo(args: list) -> None:
     '''

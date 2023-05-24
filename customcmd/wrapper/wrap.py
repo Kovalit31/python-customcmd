@@ -15,4 +15,6 @@ def exec(function: types.FunctionType, return_code: int, fnreturns_code=False, _
     except KeyboardInterrupt or EOFError:
         return config.SYS_EXEC_CONTINUE
     except Exception as e:
+        if config.EXTRA_DEBUG:
+            raise e
         return config.SYS_EXEC_CONTINUE, e

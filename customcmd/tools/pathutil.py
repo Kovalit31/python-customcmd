@@ -1,4 +1,5 @@
 import os
+import pathlib
 from . import global_functions
 from ..locale import locale
 
@@ -10,9 +11,9 @@ def get_full_path(_path: str, return_else=False):
     '''
     Get full path to file or dir
     '''
-    path = os.path.join(os.path.abspath("."), _path) if not os.path.isabs(_path) else _path
-    if os.path.exists(path) or return_else:
-        return os.path.realpath(path)
+    path = pathlib.Path(_path).expanduser()
+    if path.exists() or return_else:
+        return path.resolve()
     else:
         global_functions.out(f"{locale.get_by_token('io.path.error.notexists').format(path=_path)}")
         return None
@@ -28,8 +29,8 @@ def is_file_throw(_path: str):
     path = get_full_path(_path)
     if path == None:
         return None
-    if os.path.isfile(path):
-        return path
+    if path.is_file():
+        return os.fspath(path)
     else:
         global_functions.out(f"{locale.get_by_token('io.path.error.notfile').format(path=_path)}", level='e')
         return None
@@ -41,8 +42,8 @@ def is_dir_throw(_path: str):
     path = get_full_path(_path)
     if path == None:
         return None
-    if os.path.isdir(path):
-        return path
+    if path.is_dir():
+        return os.fspath(path)
     else:
         global_functions.out(f"{locale.get_by_token('io.path.error.notdir').format(path=_path)}", level='e')
         return None

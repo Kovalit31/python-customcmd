@@ -1,3 +1,4 @@
+from customcmd.core import config
 from customcmd.tools import global_functions, pathutil
 from customcmd.locale import locale
 
@@ -47,5 +48,7 @@ def exec(args: list) -> list:
         commands = file.readlines()
         file.close()
     except Exception as e:
+        if config.EXTRA_DEBUG:
+            raise e
         global_functions.out(f"{locale.get_by_token('tokens.ERROR_FILE_READ')} {e}", level='e') # TODO Replace all tokens.
     return commands

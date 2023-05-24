@@ -1,3 +1,4 @@
+from ..core import config
 from ..locale import locale
 from . import pathutil, global_functions
 
@@ -31,6 +32,8 @@ def write_to_file(path: str, text: str) -> None:
         file.write(text)
         file.close()
     except Exception as e:
+        if config.EXTRA_DEBUG:
+            raise e
         global_functions.out(f"{locale.get_by_token('io.path.file.action.write.error').format(file=path, error=e)}", level='e')
 
 def read_from_file(path: str) -> None:
@@ -42,7 +45,9 @@ def read_from_file(path: str) -> None:
         ret = file.readlines()
         file.close()
         return ret
-    except:
+    except Exception as e:
+        if config.EXTRA_DEBUG:
+            raise e
         return [] # TODO: Read error
 
 # ==================
