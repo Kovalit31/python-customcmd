@@ -133,6 +133,8 @@ class Wrap():
                 if len(other) > 0 and config.DEBUG:
                     global_functions.out(f"{locale.get_by_token('exec.sys.cmd.error').format(error=other[0])}", level='e')
             elif code == config.SYS_EXEC_EXECFILE:
+                if len(other) < 1:
+                    continue
                 commands = other[0]
                 in_command = len(commands) != 0
                 iterator = 0

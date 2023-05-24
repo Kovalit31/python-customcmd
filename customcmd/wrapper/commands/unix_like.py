@@ -39,8 +39,8 @@ def echo(args: list) -> None:
     '''
     args = args[1:]
     joined_args = " ".join(args)
-    quote_count = global_functions.char_count(joined_args, '"')
-    print(joined_args.replace('"', "", quote_count - quote_count % 2))
+    start, end = global_functions.char_count(joined_args, '"')
+    print(joined_args.replace('"', "", (end - start) - (end - start) % 2))
 
 def pwd(_: list, _return_path=False) -> None:
     '''

@@ -11,9 +11,11 @@ def export(args: list) -> tuple[str, str]:
     _var = None
     _val = None
     _parsed = " ".join(args[1:])
+    start, end = global_functions.char_count(_parsed, "=")
+    if end - start > 0:
+        return None, None
     _var, _val = _parsed.split("=", maxsplit=1)
-    print(_var, _val)
-    return _var, _val
+    return _var.strip(), _val.strip()
     
 def read(args: list) -> tuple[str, str]:
     '''

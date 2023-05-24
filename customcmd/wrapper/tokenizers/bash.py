@@ -1,14 +1,16 @@
 from customcmd.tools import global_functions
+from customcmd.wrapper.control import Wrap
 import string 
 import copy
 
 VARIABLE_PREFIX = "$"
+SPECIAL_VS = ["_", "@", "!"]
 CMD_DELIMITER = " "
 STRING_1 = "\""
 STRING_2 = "'"
 
 def ps1_parse(ps1: str, functions: dict, variables: dict = dict()) -> str:
-    return ps1 if not 'pwd' in global_functions.get_dict_keys(functions) else functions['pwd'][0]([], _return_path = True) + "$"
+    return ps1 if not 'pwd' in global_functions.get_dict_keys(functions) else functions['pwd'][0]([], _return_path = True) + "$ "
 
 def cmd_parse(args: str, variables: dict):
     mapped = []
@@ -76,9 +78,16 @@ def cmd_parse(args: str, variables: dict):
             elif _temp[y] in punctuation:
                 if invar:
                     invar = False
-                    if _tvar in _available_vars:
-                        _other = global_functions.clever_add_str(_other, variables[_tvar])
-                _other = global_functions.clever_add_str(_other, _temp[y])
+                    if y == 1 and _temp[y] in SPECIAL_VS:
+                        _tvar = global_functions.clever_add_str(_tvar, _temp[y])
+                        if _tvar in _available_vars:
+                            _other = global_functions.clever_add_str(_other, variables[_tvar])
+                    else:
+                        if _tvar in _available_vars:
+                            _other = global_functions.clever_add_str(_other, variables[_tvar])
+                        _other = global_functions.clever_add_str(_other, _temp[y])
+                else:
+                    _other = global_functions.clever_add_str(_other, _temp[y])
             else:
                 if invar:
                     _tvar = global_functions.clever_add_str(_tvar, _temp[y])
@@ -88,3 +97,9 @@ def cmd_parse(args: str, variables: dict):
         _other = ""
 
     return mapped
+
+def exec(runner: Wrap) -> int: # TODO Execute commands another way
+    pass
+
+def run(runner: Wrap) -> None: # TODO Execute commands another way
+    pass
